@@ -9,8 +9,8 @@ Edge::Edge() : target(nullptr), cost(0) {}
 Edge::Edge(Node& _target, float _cost) : target(&_target), cost(_cost) {}
 Edge::~Edge() {}
 
-Node::Node() : m_position(0, 0) {}
-Node::Node(float x, float y) : m_position(x, y) {}
+Node::Node() : m_position(0, 0), gScore(0), previous(nullptr) {}
+Node::Node(float x, float y) : m_position(x, y), gScore(0), previous(nullptr) {}
 Node::~Node() {}
 void Node::ConnectTo(Node& other, float cost) { m_connections.push_back(Edge(other, cost)); }
 
@@ -131,5 +131,33 @@ void NodeMap::Draw()
 				}
 			}
 		}
+	}
+}
+
+std::vector<Node*> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
+{
+	//	Validate the input
+	if (startNode || endNode)
+	{
+
+	}
+	if (startNode == endNode)
+	{
+
+	}
+
+	//	Initialise the starting node
+	startNode.gScore = 0;
+	startNode.previous = nullptr;
+
+	//	Create our temporary lists for storing nodes we're visiting/visited
+	vector<Node&> openList;
+	vector<Node&> closedList;
+
+	openList.push_back(startNode);
+
+	while (openList.size() != 0)
+	{
+
 	}
 }

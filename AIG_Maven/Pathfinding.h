@@ -20,6 +20,8 @@ namespace AIForGames
 	struct Node {
 		glm::vec2 m_position;
 		std::vector<Edge> m_connections;
+		float gScore;
+		Node* previous;
 
 		Node();
 		Node(float x, float y);
@@ -41,4 +43,6 @@ namespace AIForGames
 
 		void Draw();
 	};
+
+	std::vector<Node*> DijkstrasSearch(Node& startNode, Node& endNode);
 }
