@@ -43,6 +43,7 @@ namespace AIForGames
 
 		void Draw();
 	};
-
-	std::vector<Node*> DijkstrasSearch(Node& startNode, Node& endNode);
+		
+	bool NodeSort(Node* i, Node* j);
+	std::vector<Node&> DijkstrasSearch(Node& startNode, Node& endNode);
 }

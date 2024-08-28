@@ -134,16 +134,25 @@ void NodeMap::Draw()
 	}
 }
 
-std::vector<Node*> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
+#include <algorithm>
+
+bool AIForGames::NodeSort(Node* i, Node* j)
+{
+	return (i->gScore < j->gScore);
+}
+
+std::vector<Node&> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
 {
 	//	Validate the input
-	if (startNode || endNode)
+	if (&startNode || &endNode)
 	{
-
+		return vector<Node&>();
 	}
-	if (startNode == endNode)
+	if (&startNode == &endNode)
 	{
-
+		vector<Node&> singleNodePath;
+		singleNodePath.push_back(startNode);
+		return singleNodePath;
 	}
 
 	//	Initialise the starting node
@@ -158,6 +167,27 @@ std::vector<Node*> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
 
 	while (openList.size() != 0)
 	{
+		//	Sort openList based on gScore
+		sort(openList.begin(), openList.end(), NodeSort);
 
+		Node* currentNode = &openList[0];
+
+		//	If we visit the endNode, then we can exit early.
+		//	Sorting the openList above guarantees the shortest path is found,
+		//given no negative costs (a prerequisite of the algorithm).
+		//	This is an optional optimisation that improves performance,
+		//but doesn't always guarantee the shortest path.
+		if (currentNode == &endNode)
+		{
+			break;
+		}
+
+		openList.erase(openList.begin());
+		closedList.push_back(*currentNode);
+
+		for (Edge c : currentNode->m_connections)	//	for all m_connections in currentNode
+		{
+
+		}
 	}
 }
