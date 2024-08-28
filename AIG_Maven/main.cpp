@@ -6,7 +6,6 @@
 //#include "raygui.h"
 #include "Pathfinding.h"
 #include <string>
-#include "NodeMap.h"
 
 using namespace AIForGames;
 using namespace std;
