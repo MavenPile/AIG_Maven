@@ -1,11 +1,13 @@
 #include "NodeMap.h"
-#include "Pathfinding.h"
 #include <iostream>
 #include <Color.hpp>
+#include "Pathfinding.h"
+
+using namespace AIForGames;	//	allows writing "Node" instead of "AIForGames::Node"
 
 void NodeMap::Initialise(std::vector<std::string> asciiMap, int cellSize)
 {
-	m_cellsize = cellSize;
+	m_cellSize = cellSize;
 	const char emptySquare = '0';
 
 	//	assume all strings are the same length, so we'll size the map according
@@ -39,7 +41,7 @@ void NodeMap::Initialise(std::vector<std::string> asciiMap, int cellSize)
 			//	create a node for anything but a 'x' character
 
 			m_nodes[x + m_width * y] = tile == emptySquare ? nullptr
-				: new AIForGames::Node(((float)x + 0.5f) * m_cellsize, ((float)y + 0.5f) * m_cellsize);
+				: new Node(((float)x + 0.5f) * m_cellSize, ((float)y + 0.5f) * m_cellSize);
 		}
 	}
 
@@ -50,14 +52,14 @@ void NodeMap::Initialise(std::vector<std::string> asciiMap, int cellSize)
 	{
 		for (int x = 0; x < m_width; x++)
 		{
-			AIForGames::Node* node = &GetNode(x, y);
+			Node* node = &GetNode(x, y);
 
 			if (node)
 			{
 				//	see if there's a node to our West, checking for array overruns
 				//first if we're on the West-most edge
 
-				AIForGames::Node* nodeWest = x == 0 ? nullptr : &GetNode(x - 1, y);
+				Node* nodeWest = x == 0 ? nullptr : &GetNode(x - 1, y);
 
 				if (nodeWest)
 				{
@@ -68,7 +70,7 @@ void NodeMap::Initialise(std::vector<std::string> asciiMap, int cellSize)
 				//	see if there's a node south of us, checking for array index
 				//overruns again
 
-				AIForGames::Node* nodeSouth = y == 0 ? nullptr : &GetNode(x, y - 1);
+				Node* nodeSouth = y == 0 ? nullptr : &GetNode(x, y - 1);
 
 				if (nodeSouth)
 				{
@@ -88,6 +90,12 @@ void NodeMap::Draw()
 	cellColor.g = 0;
 	cellColor.b = 0;
 
+	Color lineColor;
+	lineColor.a = 255;
+	lineColor.r = 0;
+	lineColor.g = 0;
+	lineColor.b = 0;
+
 	for (int y = 0; y < m_height; y++)
 	{
 		for (int x = 0; x < m_width; x++)
@@ -97,8 +105,19 @@ void NodeMap::Draw()
 			{
 				//	draw a solid block in emptry squares without a navigation node
 
-				DrawRectangle((int)(x * m_cellsize), (int)(y * m_cellsize), 
-					(int)m_cellsize - 1, (int)m_cellsize - 1, cellColor);
+				DrawRectangle((int)(x * m_cellSize), (int)(y * m_cellSize), 
+					(int)m_cellSize - 1, (int)m_cellSize - 1, cellColor);
+			}
+			else
+			{
+				//	Draw the connections between the node and its neighbours
+				for (int i = 0; i < node->m_connections.size(); i++)
+				{
+					Node* other = node->m_connections[i].target;
+					DrawLine((x + 0.5f) * m_cellSize, (y + 0.5f) * m_cellSize,
+						(int)other->m_position.x, (int)other->m_position.y,
+						lineColor);
+				}
 			}
 		}
 	}

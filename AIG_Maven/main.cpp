@@ -5,9 +5,11 @@
 
 //#include "raygui.h"
 #include "Pathfinding.h"
-//#include "cstring.h"
+#include <string>
+#include "NodeMap.h"
 
 using namespace AIForGames;
+using namespace std;
 
 int main()
 {
@@ -22,6 +24,18 @@ int main()
 
 	//---
 
+	vector<string> asciiMap;
+	asciiMap.push_back("000000000000");
+	asciiMap.push_back("010111011100");
+	asciiMap.push_back("010101110110");
+	asciiMap.push_back("010100000000");
+	asciiMap.push_back("010111111110");
+	asciiMap.push_back("010000001000");
+	asciiMap.push_back("011111111110");
+	asciiMap.push_back("000000000000");
+
+	NodeMap map;
+	map.Initialise(asciiMap, 100);
 
 	//---	LOOP
 	while (!WindowShouldClose())
@@ -36,6 +50,7 @@ int main()
 
 		ClearBackground(RAYWHITE);
 		DrawText("This is your window!", 190, 200, 20, LIGHTGRAY);
+		map.Draw();
 
 		EndDrawing();
 	}
