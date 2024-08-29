@@ -8,6 +8,9 @@ namespace AIForGames
 {
 	struct Node;
 
+	bool NodeSort(Node* i, Node* j);
+	std::vector<Node&> DijkstrasSearch(Node& startNode, Node& endNode);
+
 	struct Edge {
 		Node* target;
 		float cost;
@@ -43,7 +46,4 @@ namespace AIForGames
 
 		void Draw();
 	};
-		
-	bool NodeSort(Node* i, Node* j);
-	std::vector<Node&> DijkstrasSearch(Node& startNode, Node& endNode);
 }

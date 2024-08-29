@@ -1,9 +1,109 @@
 #include "Pathfinding.h"
 #include <iostream>
 #include <Color.hpp>
+#include <algorithm>
 
 using namespace AIForGames;
 using namespace std;
+
+bool AIForGames::NodeSort(Node* i, Node* j)
+{
+	return (i->gScore < j->gScore);
+}
+
+std::vector<Node&> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
+{
+	//	Validate the input
+	if (&startNode || &endNode)	//	If startNode is null OR endNode is NULL
+	{
+		//	Raise error
+		return vector<Node&>();
+	}
+	if (&startNode == &endNode)	//	If startNode == endNode
+	{
+		//	Return empty path
+		vector<Node&> emptyPath;
+		emptyPath.push_back(startNode);
+		return emptyPath;
+	}
+
+	//	Initialise the starting node
+	startNode.gScore = 0;
+	startNode.previous = nullptr;
+
+	//	Create our temporary lists for storing nodes we're visiting/visited
+	vector<Node&> openList;
+	vector<Node&> closedList;
+
+	//	Add startNode to openList
+	openList.push_back(startNode);
+
+	//	While openList is not empty
+	while (openList.size() != 0)
+	{
+		//	Sort openList based on gScore
+		sort(openList.begin(), openList.end(), NodeSort);
+
+		Node* currentNode = &openList[0];
+
+		//	If we visit the endNode, then we can exit early.
+		//	Sorting the openList above guarantees the shortest path is found,
+		//given no negative costs (a prerequisite of the algorithm).
+		//	This is an optional optimisation that improves performance,
+		//but doesn't always guarantee the shortest path.
+		if (currentNode == &endNode)
+		{
+			break;
+		}
+
+		//	Remove currentNode from openList
+		openList.erase(openList.begin());
+
+		//	Add currentNode to closedList
+		closedList.push_back(*currentNode);
+
+		//	For all connections c in currentNode
+		for (Edge c : currentNode->m_connections)
+		{
+			if (c.target)	//	if c.target is not in open list
+			{
+				//	Let gScore = currentNode.gScore + c.cost
+				currentNode->gScore = currentNode->gScore + c.cost;
+
+				//	Have not yet visited the node.
+				//	So calculate the Score and update its parent.
+				//	Also add it to the openList for processing.
+				if (c.target != &closedList[0])	//	if c.target is not in closed list
+				{
+					c.target->gScore = currentNode->gScore;
+					c.target->previous = currentNode;
+					openList.push_back(*c.target);
+				}
+				//	Node is already in the openList with a valid gScore.
+				//	So compare the calculated gScore with the existing
+				//to find the shorter path.
+				else if (currentNode->gScore < c.target->gScore)	//	Else if (gScore < c.target.gScore)
+				{
+					c.target->gScore = currentNode->gScore;
+					c.target->previous = currentNode;
+				}
+			}
+		}
+	}
+
+	//	Create path in reverse from endNode to startNode
+	vector<Node&> path;
+	Node* currentNode = &endNode;
+
+	while (currentNode != nullptr)
+	{
+		path.push_back(*currentNode);
+		currentNode = currentNode->previous;
+	}
+
+	//	Return the path for navigation between startNode/endNode
+	return path;
+}
 
 Edge::Edge() : target(nullptr), cost(0) {}
 Edge::Edge(Node& _target, float _cost) : target(&_target), cost(_cost) {}
@@ -134,60 +234,3 @@ void NodeMap::Draw()
 	}
 }
 
-#include <algorithm>
-
-bool AIForGames::NodeSort(Node* i, Node* j)
-{
-	return (i->gScore < j->gScore);
-}
-
-std::vector<Node&> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
-{
-	//	Validate the input
-	if (&startNode || &endNode)
-	{
-		return vector<Node&>();
-	}
-	if (&startNode == &endNode)
-	{
-		vector<Node&> singleNodePath;
-		singleNodePath.push_back(startNode);
-		return singleNodePath;
-	}
-
-	//	Initialise the starting node
-	startNode.gScore = 0;
-	startNode.previous = nullptr;
-
-	//	Create our temporary lists for storing nodes we're visiting/visited
-	vector<Node&> openList;
-	vector<Node&> closedList;
-
-	openList.push_back(startNode);
-
-	while (openList.size() != 0)
-	{
-		//	Sort openList based on gScore
-		sort(openList.begin(), openList.end(), NodeSort);
-
-		Node* currentNode = &openList[0];
-
-		//	If we visit the endNode, then we can exit early.
-		//	Sorting the openList above guarantees the shortest path is found,
-		//given no negative costs (a prerequisite of the algorithm).
-		//	This is an optional optimisation that improves performance,
-		//but doesn't always guarantee the shortest path.
-		if (currentNode == &endNode)
-		{
-			break;
-		}
-
-		openList.erase(openList.begin());
-		closedList.push_back(*currentNode);
-
-		for (Edge c : currentNode->m_connections)	//	for all m_connections in currentNode
-		{
-
-		}
-	}
-}
