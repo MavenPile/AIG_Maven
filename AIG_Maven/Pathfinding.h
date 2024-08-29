@@ -3,13 +3,15 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include <string>
+#include <Color.hpp>
 
 namespace AIForGames
 {
 	struct Node;
 
 	bool NodeSort(Node* i, Node* j);
-	std::vector<Node*> DijkstrasSearch(Node& startNode, Node& endNode);
+	void DrawPath(std::vector<Node*>& path, Color lineColour);
+	std::vector<Node*> DijkstrasSearch(Node* startNode, Node* endNode);
 
 	struct Edge {
 		Node* target;
@@ -47,8 +49,10 @@ namespace AIForGames
 	public:
 		void Initialise(std::vector<std::string> asciiMap, int cellSize);
 
-		Node& GetNode(int x, int y);
+		Node* GetNode(int x, int y);
 
 		void Draw();
+
+		Node* GetClosestNode(glm::vec2 worldPos);
 	};
 }

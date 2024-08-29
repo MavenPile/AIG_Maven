@@ -11,16 +11,22 @@ bool AIForGames::NodeSort(Node* i, Node* j)
 	return (i->gScore < j->gScore);
 }
 
-std::vector<Node*> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
+void AIForGames::DrawPath(std::vector<Node*>& path, Color lineColour) {
+	for (int i = 1; i < path.size(); i++) {
+		DrawLine(path[i - 1]->m_position.x, path[i - 1]->m_position.y, path[i]->m_position.x, path[i]->m_position.y, lineColour);
+	}
+}
+
+std::vector<Node*> AIForGames::DijkstrasSearch(Node* startNode, Node* endNode)
 {
 	//	Validate the input
-	if (&startNode)	//	If startNode is null OR endNode is NULL
+	if (startNode == nullptr)	//	If startNode is null OR endNode is NULL
 	{
 		//	Raise error
 		cout << "Search Validation Error: startNode is not valid." << endl;
 		return vector<Node*>();
 	}
-	else if (&endNode)
+	else if (endNode == nullptr)
 	{
 		cout << "Search Validation Error: endNode is not valid." << endl;
 		return vector<Node*>();
@@ -30,20 +36,20 @@ std::vector<Node*> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
 	{
 		//	Return empty path
 		vector<Node*> emptyPath;
-		emptyPath.push_back(&startNode);
+		emptyPath.push_back(startNode);
 		return emptyPath;
 	}
 
 	//	Initialise the starting node
-	startNode.gScore = 0;
-	startNode.previous = nullptr;
+	startNode->gScore = 0;
+	startNode->previous = nullptr;
 
 	//	Create our temporary lists for storing nodes we're visiting/visited
 	vector<Node*> openList;
 	vector<Node*> closedList;
 
 	//	Add startNode to openList
-	openList.push_back(&startNode);
+	openList.push_back(startNode);
 
 	//	While openList is not empty
 	while (!openList.empty())
@@ -134,7 +140,7 @@ std::vector<Node*> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
 
 	//	Create path in reverse from endNode to startNode
 	vector<Node*> path;
-	Node* currentNode = &endNode;
+	Node* currentNode = endNode;
 
 	while (currentNode != nullptr)
 	{
@@ -206,14 +212,14 @@ void NodeMap::Initialise(vector<string> asciiMap, int cellSize)
 	{
 		for (int x = 0; x < m_width; x++)
 		{
-			Node* node = &GetNode(x, y);
+			Node* node = GetNode(x, y);
 
 			if (node)
 			{
 				//	see if there's a node to our West, checking for array overruns
 				//first if we're on the West-most edge
 
-				Node* nodeWest = x == 0 ? nullptr : &GetNode(x - 1, y);
+				Node* nodeWest = x == 0 ? nullptr : GetNode(x - 1, y);
 
 				if (nodeWest)
 				{
@@ -224,7 +230,7 @@ void NodeMap::Initialise(vector<string> asciiMap, int cellSize)
 				//	see if there's a node south of us, checking for array index
 				//overruns again
 
-				Node* nodeSouth = y == 0 ? nullptr : &GetNode(x, y - 1);
+				Node* nodeSouth = y == 0 ? nullptr : GetNode(x, y - 1);
 
 				if (nodeSouth)
 				{
@@ -236,7 +242,7 @@ void NodeMap::Initialise(vector<string> asciiMap, int cellSize)
 	}
 }
 
-Node& NodeMap::GetNode(int x, int y) { return *m_nodes[x + m_width * y]; }
+Node* NodeMap::GetNode(int x, int y) { return m_nodes[x + m_width * y]; }
 
 void NodeMap::Draw()
 {
@@ -256,13 +262,13 @@ void NodeMap::Draw()
 	{
 		for (int x = 0; x < m_width; x++)
 		{
-			Node* node = &GetNode(x, y);
+			Node* node = GetNode(x, y);
 			if (node == nullptr)
 			{
 				//	draw a solid block in emptry squares without a navigation node
 
-				DrawRectangle((int)(x * m_cellSize), (int)(y * m_cellSize),
-					(int)m_cellSize - 1, (int)m_cellSize - 1, cellColor);
+				DrawRectangle((x * m_cellSize), (y * m_cellSize),
+					m_cellSize - 1, m_cellSize - 1, cellColor);
 			}
 			else
 			{
@@ -270,12 +276,23 @@ void NodeMap::Draw()
 				for (int i = 0; i < node->m_connections.size(); i++)
 				{
 					Node* other = node->m_connections[i].target;
-					DrawLine((x + 0.5f) * m_cellSize, (y + 0.5f) * m_cellSize,
-						(int)other->m_position.x, (int)other->m_position.y,
-						lineColor);
+					DrawLine(node->m_position.x, node->m_position.y,
+							other->m_position.x, other->m_position.y,
+							lineColor);
 				}
 			}
 		}
 	}
+}
+
+Node* AIForGames::NodeMap::GetClosestNode(glm::vec2 worldPos)
+{
+	int x = worldPos.x / m_cellSize;
+	if (x < 0 || x >= m_width) { return nullptr; }
+
+	int y = worldPos.y / m_cellSize;
+	if (y < 0 || y >= m_height) { return nullptr; }
+
+	return GetNode(x, y);
 }
 

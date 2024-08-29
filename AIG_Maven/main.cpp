@@ -23,6 +23,7 @@ int main()
 
 	//---
 
+	NodeMap map;
 	vector<string> asciiMap;
 	asciiMap.push_back("000000000000");
 	asciiMap.push_back("010111011100");
@@ -32,9 +33,12 @@ int main()
 	asciiMap.push_back("010000001000");
 	asciiMap.push_back("011111111110");
 	asciiMap.push_back("000000000000");
-
-	NodeMap map;
 	map.Initialise(asciiMap, 100);
+
+	Node* start = map.GetNode(1, 1);
+	Node* end = map.GetNode(10, 2);
+	std::vector<Node*> nodeMapPath = DijkstrasSearch(start, end);
+	Color lineColour = { 255,255,255,255 };
 
 	//---	LOOP
 	while (!WindowShouldClose())
@@ -42,14 +46,25 @@ int main()
 		//---	UPDATE
 
 
-
 		//---	DRAW
 
 		BeginDrawing();
 
-		ClearBackground(RAYWHITE);
-		DrawText("This is your window!", 190, 200, 20, LIGHTGRAY);
+		ClearBackground(DARKGRAY);
+
+		if (IsMouseButtonPressed(0)) {
+			Vector2 mousePos = GetMousePosition();
+			start = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
+			nodeMapPath = DijkstrasSearch(start, end);
+		}
+		else if (IsMouseButtonPressed(1)) {
+			Vector2 mousePos = GetMousePosition();
+			end = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
+			nodeMapPath = DijkstrasSearch(start, end);
+		}
+
 		map.Draw();
+		DrawPath(nodeMapPath, lineColour);
 
 		EndDrawing();
 	}
