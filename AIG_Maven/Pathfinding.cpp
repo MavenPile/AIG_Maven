@@ -6,24 +6,31 @@
 using namespace AIForGames;
 using namespace std;
 
-bool AIForGames::NodeSort(Node* i, Node* j)
+bool AIForGames::NodeSort(Node& i, Node& j)
 {
-	return (i->gScore < j->gScore);
+	return (i.gScore < j.gScore);
 }
 
-std::vector<Node&> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
+std::vector<Node*> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
 {
 	//	Validate the input
-	if (&startNode || &endNode)	//	If startNode is null OR endNode is NULL
+	if (&startNode)	//	If startNode is null OR endNode is NULL
 	{
 		//	Raise error
-		return vector<Node&>();
+		cout << "Search Validation Error: startNode is not valid." << endl;
+		return vector<Node*>();
 	}
+	else if (&endNode)
+	{
+		cout << "Search Validation Error: endNode is not valid." << endl;
+		return vector<Node*>();
+	}
+
 	if (&startNode == &endNode)	//	If startNode == endNode
 	{
 		//	Return empty path
-		vector<Node&> emptyPath;
-		emptyPath.push_back(startNode);
+		vector<Node*> emptyPath;
+		emptyPath.push_back(&startNode);
 		return emptyPath;
 	}
 
@@ -32,19 +39,19 @@ std::vector<Node&> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
 	startNode.previous = nullptr;
 
 	//	Create our temporary lists for storing nodes we're visiting/visited
-	vector<Node&> openList;
-	vector<Node&> closedList;
+	vector<Node*> openList;
+	vector<Node*> closedList;
 
 	//	Add startNode to openList
-	openList.push_back(startNode);
+	openList.push_back(&startNode);
 
 	//	While openList is not empty
-	while (openList.size() != 0)
+	while (!openList.empty())
 	{
 		//	Sort openList based on gScore
 		sort(openList.begin(), openList.end(), NodeSort);
 
-		Node* currentNode = &openList[0];
+		Node* currentNode = openList.front();
 
 		//	If we visit the endNode, then we can exit early.
 		//	Sorting the openList above guarantees the shortest path is found,
@@ -60,12 +67,28 @@ std::vector<Node&> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
 		openList.erase(openList.begin());
 
 		//	Add currentNode to closedList
-		closedList.push_back(*currentNode);
+		closedList.push_back(currentNode);
 
 		//	For all connections c in currentNode
 		for (Edge c : currentNode->m_connections)
 		{
-			if (c.target)	//	if c.target is not in open list
+			//	If target is in closedList
+			if (find(closedList.begin(), closedList.end(), c.GetTarget()) != closedList.end()) {
+				//	Don't process target, it has already been processed
+				continue;
+			}
+			
+			//	If target is in openList
+			if (find(openList.begin(), openList.end(), c.GetTarget()) != openList.end()) {
+
+			}
+			else	//	Target is not in openList, update target
+			{
+
+			}
+
+			if (find(openList.begin(), openList.end(), c.GetTarget()) == openList.end())	//	if c.target is not in open list
+				//	std::find returns last/end() if it cannot find the target
 			{
 				//	Let gScore = currentNode.gScore + c.cost
 				currentNode->gScore = currentNode->gScore + c.cost;
@@ -73,11 +96,11 @@ std::vector<Node&> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
 				//	Have not yet visited the node.
 				//	So calculate the Score and update its parent.
 				//	Also add it to the openList for processing.
-				if (c.target != &closedList[0])	//	if c.target is not in closed list
+				if (find(closedList.begin(), closedList.end(), c.GetTarget()) == closedList.end())	//	if c.target is not in closed list
 				{
 					c.target->gScore = currentNode->gScore;
-					c.target->previous = currentNode;
-					openList.push_back(*c.target);
+					c.target->SetPrevious(*currentNode);
+					openList.push_back(&c.GetTarget());
 				}
 				//	Node is already in the openList with a valid gScore.
 				//	So compare the calculated gScore with the existing
@@ -85,19 +108,19 @@ std::vector<Node&> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
 				else if (currentNode->gScore < c.target->gScore)	//	Else if (gScore < c.target.gScore)
 				{
 					c.target->gScore = currentNode->gScore;
-					c.target->previous = currentNode;
+					c.target->SetPrevious(*currentNode);
 				}
 			}
 		}
 	}
 
 	//	Create path in reverse from endNode to startNode
-	vector<Node&> path;
+	vector<Node*> path;
 	Node* currentNode = &endNode;
 
 	while (currentNode != nullptr)
 	{
-		path.push_back(*currentNode);
+		path.push_back(currentNode);
 		currentNode = currentNode->previous;
 	}
 
@@ -108,11 +131,15 @@ std::vector<Node&> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
 Edge::Edge() : target(nullptr), cost(0) {}
 Edge::Edge(Node& _target, float _cost) : target(&_target), cost(_cost) {}
 Edge::~Edge() {}
+Node& Edge::GetTarget() { return *target; }
+void Edge::SetTarget(Node& newTarget) { target = &newTarget; }
 
 Node::Node() : m_position(0, 0), gScore(0), previous(nullptr) {}
 Node::Node(float x, float y) : m_position(x, y), gScore(0), previous(nullptr) {}
 Node::~Node() {}
 void Node::ConnectTo(Node& other, float cost) { m_connections.push_back(Edge(other, cost)); }
+Node& Node::GetPrevious() { return *previous; }
+void Node::SetPrevious(Node& newPrevious) { previous = &newPrevious; }
 
 void NodeMap::Initialise(vector<string> asciiMap, int cellSize)
 {
