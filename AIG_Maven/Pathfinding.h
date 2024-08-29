@@ -9,10 +9,12 @@ namespace AIForGames
 {
 	struct Node;
 
+	//	PATHFINDING
 	bool NodeSort(Node* i, Node* j);
 	void DrawPath(std::vector<Node*>& path, Color lineColour);
 	std::vector<Node*> DijkstrasSearch(Node* startNode, Node* endNode);
 
+	//	PATHING
 	struct Edge {
 		Node* target;
 		float cost;
@@ -48,11 +50,27 @@ namespace AIForGames
 
 	public:
 		void Initialise(std::vector<std::string> asciiMap, int cellSize);
-
 		Node* GetNode(int x, int y);
-
 		void Draw();
-
 		Node* GetClosestNode(glm::vec2 worldPos);
+	};
+
+	//	AGENT
+	class Agent
+	{
+		glm::vec2 m_position;
+
+		std::vector<Node*> m_path;
+		int m_currentIndex;
+		Node* m_currentNode;
+
+		float m_speed;
+
+	public:
+		Agent();
+		
+		void Update(float deltaTime);
+		void GoToNode(Node* node);
+		void Draw();
 	};
 }
