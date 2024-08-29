@@ -6,9 +6,9 @@
 using namespace AIForGames;
 using namespace std;
 
-bool AIForGames::NodeSort(Node& i, Node& j)
+bool AIForGames::NodeSort(Node* i, Node* j)
 {
-	return (i.gScore < j.gScore);
+	return (i->gScore < j->gScore);
 }
 
 std::vector<Node*> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
@@ -51,17 +51,17 @@ std::vector<Node*> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
 		//	Sort openList based on gScore
 		sort(openList.begin(), openList.end(), NodeSort);
 
-		Node* currentNode = openList.front();
+		Node* currentNode = *openList.begin();
 
 		//	If we visit the endNode, then we can exit early.
 		//	Sorting the openList above guarantees the shortest path is found,
 		//given no negative costs (a prerequisite of the algorithm).
 		//	This is an optional optimisation that improves performance,
 		//but doesn't always guarantee the shortest path.
-		if (currentNode == &endNode)
-		{
-			break;
-		}
+		//if (currentNode == &endNode)
+		//{
+		//	break;
+		//}
 
 		//	Remove currentNode from openList
 		openList.erase(openList.begin());
@@ -73,44 +73,62 @@ std::vector<Node*> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
 		for (Edge c : currentNode->m_connections)
 		{
 			//	If target is in closedList
-			if (find(closedList.begin(), closedList.end(), c.GetTarget()) != closedList.end()) {
-				//	Don't process target, it has already been processed
+			if (find(closedList.begin(), closedList.end(), c.target) != closedList.end()) {
+				//	Don't process target, it has already been processed.
 				continue;
 			}
 			
-			//	If target is in openList
-			if (find(openList.begin(), openList.end(), c.GetTarget()) != openList.end()) {
+			//	Calculate the gScore for the target.
+			float gScore = currentNode->gScore + c.cost;
 
+			//	If target is not in openList, process target.
+			if (find(openList.begin(), openList.end(), c.target) == openList.end()) {
+				//	This target has not been visited, so we must
+				//update its gScore to the value we've calculated,
+				//update its parent, and add it to the openList.
+				c.target->gScore = gScore;
+				c.target->SetPrevious(*currentNode);
+				openList.push_back(c.target);
+
+				//	Sort the list to keep all nodes in the appropriate
+				//position while processing all currentNode edges.
+				//	Keeping the openList sorted prioritises nodes with
+				//the lowest gScore.
+				sort(openList.begin(), openList.end(), NodeSort);
 			}
-			else	//	Target is not in openList, update target
+			//	Target is already in the openList with a valid gScore.
+			//	So compare the calculated gScore with the existing
+			//to find the shorter path.
+			else if (currentNode->gScore < c.target->gScore)
 			{
-
+				c.target->gScore = currentNode->gScore;
+				c.target->SetPrevious(*currentNode);
 			}
 
-			if (find(openList.begin(), openList.end(), c.GetTarget()) == openList.end())	//	if c.target is not in open list
-				//	std::find returns last/end() if it cannot find the target
-			{
-				//	Let gScore = currentNode.gScore + c.cost
-				currentNode->gScore = currentNode->gScore + c.cost;
+			//if (find(openList.begin(), openList.end(), c.GetTarget()) == openList.end())	//	if c.target is not in open list
+			//	//	std::find returns last/end() if it cannot find the target
+			//{
+			//	//	Let gScore = currentNode.gScore + c.cost
+			//	float gScore = currentNode->gScore + c.cost;
 
-				//	Have not yet visited the node.
-				//	So calculate the Score and update its parent.
-				//	Also add it to the openList for processing.
-				if (find(closedList.begin(), closedList.end(), c.GetTarget()) == closedList.end())	//	if c.target is not in closed list
-				{
-					c.target->gScore = currentNode->gScore;
-					c.target->SetPrevious(*currentNode);
-					openList.push_back(&c.GetTarget());
-				}
-				//	Node is already in the openList with a valid gScore.
-				//	So compare the calculated gScore with the existing
-				//to find the shorter path.
-				else if (currentNode->gScore < c.target->gScore)	//	Else if (gScore < c.target.gScore)
-				{
-					c.target->gScore = currentNode->gScore;
-					c.target->SetPrevious(*currentNode);
-				}
-			}
+			//	//	Have not yet visited the node.
+			//	//	So calculate the Score and update its parent.
+			//	//	Also add it to the openList for processing.
+			//	if (find(closedList.begin(), closedList.end(), c.GetTarget()) == closedList.end())	//	if c.target is not in closed list
+			//	{
+			//		c.target->gScore = gScore;
+			//		c.target->SetPrevious(*currentNode);
+			//		openList.push_back(&c.GetTarget());
+			//	}
+			//	//	Node is already in the openList with a valid gScore.
+			//	//	So compare the calculated gScore with the existing
+			//	//to find the shorter path.
+			//	else if (currentNode->gScore < c.target->gScore)	//	Else if (gScore < c.target.gScore)
+			//	{
+			//		c.target->gScore = gScore;
+			//		c.target->SetPrevious(*currentNode);
+			//	}
+			//}
 		}
 	}
 
@@ -131,7 +149,7 @@ std::vector<Node*> AIForGames::DijkstrasSearch(Node& startNode, Node& endNode)
 Edge::Edge() : target(nullptr), cost(0) {}
 Edge::Edge(Node& _target, float _cost) : target(&_target), cost(_cost) {}
 Edge::~Edge() {}
-Node& Edge::GetTarget() { return *target; }
+//Node& Edge::GetTarget() { return *target; }
 void Edge::SetTarget(Node& newTarget) { target = &newTarget; }
 
 Node::Node() : m_position(0, 0), gScore(0), previous(nullptr) {}
