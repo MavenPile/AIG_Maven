@@ -6,6 +6,7 @@
 //#include "raygui.h"
 #include "Pathfinding.h"
 #include <string>
+#include "BasePathAgent.h"
 
 using namespace AIForGames;
 using namespace std;
@@ -21,7 +22,9 @@ int main()
 
 	SetTargetFPS(60);
 
-	//---
+	float deltaTime;
+
+	//---	GENERATE MAP
 
 	NodeMap map;
 	vector<string> asciiMap;
@@ -40,10 +43,16 @@ int main()
 	std::vector<Node*> nodeMapPath = DijkstrasSearch(start, end);
 	Color lineColour = { 255,255,255,255 };
 
+	//---	GENERATE AGENT
+
+	BasePathAgent agent(start, 64);
+
 	//---	LOOP
 	while (!WindowShouldClose())
 	{
 		//---	UPDATE
+
+		deltaTime = GetFrameTime();
 
 
 		//---	DRAW
@@ -54,17 +63,21 @@ int main()
 
 		if (IsMouseButtonPressed(0)) {
 			Vector2 mousePos = GetMousePosition();
-			start = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
-			nodeMapPath = DijkstrasSearch(start, end);
+			//start = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
+			//nodeMapPath = DijkstrasSearch(start, end);
+			Node* end = map.GetClosestNode(glm::vec2(mousePos.x,mousePos.y));
+			agent.GoToNode(end);
 		}
-		else if (IsMouseButtonPressed(1)) {
-			Vector2 mousePos = GetMousePosition();
-			end = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
-			nodeMapPath = DijkstrasSearch(start, end);
-		}
+		//else if (IsMouseButtonPressed(1)) {
+		//	Vector2 mousePos = GetMousePosition();
+		//	end = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
+		//	nodeMapPath = DijkstrasSearch(start, end);
+		//}
 
 		map.Draw();
 		DrawPath(nodeMapPath, lineColour);
+		agent.Update(deltaTime);
+		agent.Draw();
 
 		EndDrawing();
 	}

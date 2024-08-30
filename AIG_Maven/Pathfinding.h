@@ -56,21 +56,21 @@ namespace AIForGames
 	};
 
 	//	AGENT
-	class Agent
-	{
-		glm::vec2 m_position;
+	//class Agent
+	//{
+	//	glm::vec2 m_position;
 
-		std::vector<Node*> m_path;
-		int m_currentIndex;
-		Node* m_currentNode;
+	//	std::vector<Node*> m_path;
+	//	int m_currentIndex;
+	//	Node* m_currentNode;
 
-		float m_speed;
+	//	float m_speed;
 
-	public:
-		Agent();
-		
-		void Update(float deltaTime);
-		void GoToNode(Node* node);
-		void Draw();
-	};
+	//public:
+	//	Agent();
+	//	
+	//	void Update(float deltaTime);
+	//	void GoToNode(Node* node);
+	//	void Draw();
+	//};
 }

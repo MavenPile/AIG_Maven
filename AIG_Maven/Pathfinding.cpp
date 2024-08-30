@@ -100,7 +100,7 @@ std::vector<Node*> AIForGames::DijkstrasSearch(Node* startNode, Node* endNode)
 				//position while processing all currentNode edges.
 				//	Keeping the openList sorted prioritises nodes with
 				//the lowest gScore.
-				sort(openList.begin(), openList.end(), NodeSort);
+				//sort(openList.begin(), openList.end(), NodeSort);
 			}
 			//	Target is already in the openList with a valid gScore.
 			//	So compare the calculated gScore with the existing
@@ -296,48 +296,48 @@ Node* AIForGames::NodeMap::GetClosestNode(glm::vec2 worldPos)
 	return GetNode(x, y);
 }
 
-AIForGames::Agent::Agent() {
-
-}
-
-void AIForGames::Agent::Update(float deltaTime) {
-	//	If path is empty, return
-	if (m_path.empty()) { return; }
-
-	//	Calculate the distance to the next node and the unit vector to that node
-	float distanceToDestination;
-	glm::vec2 unitVector;
-
-	//	Subtract speed * deltaTime from the distance (how much we are going to move this frame)
-	float frameMovement = distanceToDestination - m_speed * deltaTime;
-
-	if (frameMovement > 0)
-	{
-
-	}
-	//	We've overshot the node
-	else if (m_currentNode == *m_path.end())	//	The current node is the final node
-	{
-		m_position = m_currentNode->m_position;
-		m_path.clear();
-	}
-	else	//	We need to redirect the overshoot towards the next node
-	{
-		m_currentIndex++;
-		
-		if (m_currentNode == *m_path.end())
-		{
-			m_position = m_currentNode->m_position;
-			m_path.clear();
-		}
-	}
-}
-
-void AIForGames::Agent::GoToNode(Node* node) {
-	m_path = DijkstrasSearch(m_currentNode, node);
-	m_currentIndex = 0;
-}
-
-void AIForGames::Agent::Draw() {
-	DrawCircle(m_position.x, m_position.y, 8, { 255,0,255,0 });
-}
+//AIForGames::Agent::Agent() {
+//
+//}
+//
+//void AIForGames::Agent::Update(float deltaTime) {
+//	//	If path is empty, return
+//	if (m_path.empty()) { return; }
+//
+//	//	Calculate the distance to the next node and the unit vector to that node
+//	float distanceToDestination;
+//	glm::vec2 unitVector;
+//
+//	//	Subtract speed * deltaTime from the distance (how much we are going to move this frame)
+//	float frameMovement = distanceToDestination - m_speed * deltaTime;
+//
+//	if (frameMovement > 0)
+//	{
+//
+//	}
+//	//	We've overshot the node
+//	else if (m_currentNode == *m_path.end())	//	The current node is the final node
+//	{
+//		m_position = m_currentNode->m_position;
+//		m_path.clear();
+//	}
+//	else	//	We need to redirect the overshoot towards the next node
+//	{
+//		m_currentIndex++;
+//		
+//		if (m_currentNode == *m_path.end())
+//		{
+//			m_position = m_currentNode->m_position;
+//			m_path.clear();
+//		}
+//	}
+//}
+//
+//void AIForGames::Agent::GoToNode(Node* node) {
+//	m_path = DijkstrasSearch(m_currentNode, node);
+//	m_currentIndex = 0;
+//}
+//
+//void AIForGames::Agent::Draw() {
+//	DrawCircle(m_position.x, m_position.y, 8, { 255,0,255,0 });
+//}
