@@ -22,8 +22,6 @@ int main()
 
 	SetTargetFPS(60);
 
-	float deltaTime;
-
 	//---	GENERATE MAP
 
 	NodeMap map;
@@ -48,11 +46,14 @@ int main()
 	BasePathAgent agent(start, 64);
 
 	//---	LOOP
+
+	float deltaTime;
 	while (!WindowShouldClose())
 	{
+		deltaTime = GetFrameTime();		
+
 		//---	UPDATE
 
-		deltaTime = GetFrameTime();
 
 
 		//---	DRAW
@@ -60,6 +61,10 @@ int main()
 		BeginDrawing();
 
 		ClearBackground(DARKGRAY);
+
+		map.Draw();
+		//DrawPath(nodeMapPath, lineColour);
+		DrawPath(agent.m_path, lineColour);
 
 		if (IsMouseButtonPressed(0)) {
 			Vector2 mousePos = GetMousePosition();
@@ -69,13 +74,14 @@ int main()
 			agent.GoToNode(end);
 		}
 		//else if (IsMouseButtonPressed(1)) {
-		//	Vector2 mousePos = GetMousePosition();
-		//	end = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
-		//	nodeMapPath = DijkstrasSearch(start, end);
+		//	//Vector2 mousePos = GetMousePosition();
+		//	//end = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
+		//	//nodeMapPath = DijkstrasSearch(start, end);
+		//	agent.m_path.clear();
 		//}
 
-		map.Draw();
-		DrawPath(nodeMapPath, lineColour);
+
+
 		agent.Update(deltaTime);
 		agent.Draw();
 

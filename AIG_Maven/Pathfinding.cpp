@@ -144,7 +144,7 @@ std::vector<Node*> AIForGames::DijkstrasSearch(Node* startNode, Node* endNode)
 
 	while (currentNode != nullptr)
 	{
-		path.push_back(currentNode);
+		path.insert(path.begin(), currentNode);
 		currentNode = currentNode->previous;
 	}
 
