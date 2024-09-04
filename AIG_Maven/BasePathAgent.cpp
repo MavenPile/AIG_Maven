@@ -58,20 +58,27 @@ namespace AIForGames
 			}
 			else	//	We have NOT reached the final node
 			{
+				std::cout << "Reached a node..." << std::endl;
+				
 				//	Set a new target node
 				m_targetNode = m_path[m_currentIndex + 1];
+				std::cout << "Next node position: X: " << m_targetNode->m_position.x << ", Y: " << m_targetNode->m_position.y << std::endl;
 
 				//	Calculate distance to target node from new current node
 				dxdy = m_targetNode->m_position - m_currentNode->m_position;
+				std::cout << "Difference to next: " << dxdy.x << " " << dxdy.y << std::endl;
 				distToNext = sqrt(dxdy.x * dxdy.x + dxdy.y * dxdy.y);
+				std::cout << "Distance to next: " << distToNext << std::endl;
 
 				//	Calculate unit vector to target node
 				dxdyNormal = dxdy / distToNext;
 
 				//	Move agent to new position
-				m_position = m_currentNode->m_position - distToNext * dxdy;
+				m_position = m_targetNode->m_position - distToNext * dxdyNormal;
+				std::cout << "New position: X: " << m_position.x << ", Y: " << m_position.y << std::endl;
 
-				std::cout << "Reached a node..." << std::endl;
+
+
 
 
 				//	Redirect remaining movement towards next node
