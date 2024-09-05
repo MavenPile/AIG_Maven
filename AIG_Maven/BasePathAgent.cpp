@@ -84,7 +84,7 @@ namespace AIForGames
 	}
 
 	void AIForGames::BasePathAgent::GoToNode(Node* node) {
-		m_path = DijkstrasSearch(m_currentTargetNode, node);
+		m_path = AStarSearch(m_currentTargetNode, node);
 		m_currentTargetIndex = 0;
 	}
 
@@ -96,5 +96,4 @@ namespace AIForGames
 	std::vector<Node*> AIForGames::BasePathAgent::GetPath() { return m_path; }
 
 	const std::vector<Node*> AIForGames::BasePathAgent::GetPath() const { return m_path; }
-
 }
