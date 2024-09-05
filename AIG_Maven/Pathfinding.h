@@ -11,8 +11,11 @@ namespace AIForGames
 
 	//	PATHFINDING
 	bool NodeSort(Node* i, Node* j);
+	bool ASort(Node* i, Node* j);
 	void DrawPath(std::vector<Node*>& path, Color lineColour);
+	float AHeuristic(Node* currentNode, Node* endNode, char h);
 	std::vector<Node*> DijkstrasSearch(Node* startNode, Node* endNode);
+	std::vector<Node*> AStarSearch(Node* startNode, Node* endNode);
 
 	//	PATHING
 	struct Edge {
@@ -31,6 +34,8 @@ namespace AIForGames
 		glm::vec2 m_position;
 		std::vector<Edge> m_connections;
 		float gScore;
+		float hScore;
+		float fScore;
 		Node* previous;
 
 		Node();

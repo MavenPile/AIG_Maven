@@ -6,9 +6,12 @@
 using namespace AIForGames;
 using namespace std;
 
-bool AIForGames::NodeSort(Node* i, Node* j)
-{
+bool AIForGames::NodeSort(Node* i, Node* j)	{
 	return (i->gScore < j->gScore);
+}
+
+bool AIForGames::ASort(Node* i, Node* j)	{
+	return (i->fScore < j->fScore);
 }
 
 void AIForGames::DrawPath(std::vector<Node*>& path, Color lineColour) {
@@ -17,23 +20,54 @@ void AIForGames::DrawPath(std::vector<Node*>& path, Color lineColour) {
 	}
 }
 
+float AIForGames::AHeuristic(Node* currentNode, Node* endNode, char h)
+{
+	float dx;
+	float dy;
+	glm::vec2 disp;
+	
+	//	A switch statement so we can use different heuristics
+	switch (h) {
+	case 'm':
+		//	Manhattan Distance Heuristic
+		//	Because it leads to better pathing in grid-based maps, like
+		//the one being done for this assignment.
+
+		//	Difference in x and difference in y
+		dx = endNode->m_position.x - currentNode->m_position.x;
+		dy = endNode->m_position.y - currentNode->m_position.y;
+
+		//	Return the sum of calculations
+		return dx + dy;
+		break;
+	default:
+		//	Regular Distance Heuristic
+		//	Measures distance between current and target node
+
+		//	The displacement between the nodes
+		disp = endNode->m_position - currentNode->m_position;
+
+		//	The squared distance between the nodes
+		return disp.x * disp.x + disp.y * disp.y;
+		//	Square rooting the value would be expensive and unecessary, we can avoid it in this case
+		break;
+	}
+}
+
 std::vector<Node*> AIForGames::DijkstrasSearch(Node* startNode, Node* endNode)
 {
 	//	Validate the input
-	if (startNode == nullptr)	//	If startNode is null OR endNode is NULL
-	{
+	if (startNode == nullptr)	{	//	If startNode is null OR endNode is NULL
 		//	Raise error
 		cout << "Search Validation Error: startNode is not valid." << endl;
 		return vector<Node*>();
 	}
-	else if (endNode == nullptr)
-	{
+	else if (endNode == nullptr)	{
 		cout << "Search Validation Error: endNode is not valid." << endl;
 		return vector<Node*>();
 	}
 
-	if (&startNode == &endNode)	//	If startNode == endNode
-	{
+	if (&startNode == &endNode)	{	//	If startNode == endNode
 		//	Return empty path
 		vector<Node*> emptyPath;
 		emptyPath.push_back(startNode);
@@ -52,8 +86,7 @@ std::vector<Node*> AIForGames::DijkstrasSearch(Node* startNode, Node* endNode)
 	openList.push_back(startNode);
 
 	//	While openList is not empty
-	while (!openList.empty())
-	{
+	while (!openList.empty())	{
 		//	Sort openList based on gScore
 		sort(openList.begin(), openList.end(), NodeSort);
 
@@ -76,8 +109,7 @@ std::vector<Node*> AIForGames::DijkstrasSearch(Node* startNode, Node* endNode)
 		closedList.push_back(currentNode);
 
 		//	For all connections c in currentNode
-		for (Edge c : currentNode->m_connections)
-		{
+		for (Edge c : currentNode->m_connections)	{
 			//	If target is in closedList
 			if (find(closedList.begin(), closedList.end(), c.target) != closedList.end()) {
 				//	Don't process target, it has already been processed.
@@ -105,8 +137,7 @@ std::vector<Node*> AIForGames::DijkstrasSearch(Node* startNode, Node* endNode)
 			//	Target is already in the openList with a valid gScore.
 			//	So compare the calculated gScore with the existing
 			//to find the shorter path.
-			else if (currentNode->gScore < c.target->gScore)
-			{
+			else if (currentNode->gScore < c.target->gScore)	{
 				c.target->gScore = currentNode->gScore;
 				c.target->SetPrevious(*currentNode);
 			}
@@ -142,8 +173,104 @@ std::vector<Node*> AIForGames::DijkstrasSearch(Node* startNode, Node* endNode)
 	vector<Node*> path;
 	Node* currentNode = endNode;
 
-	while (currentNode != nullptr)
-	{
+	while (currentNode != nullptr)	{
+		path.insert(path.begin(), currentNode);
+		currentNode = currentNode->previous;
+	}
+
+	//	Return the path for navigation between startNode/endNode
+	return path;
+}
+
+std::vector<Node*> AIForGames::AStarSearch(Node* startNode, Node* endNode)
+{
+	//	Validate the input
+	if (startNode == nullptr) {	//	If startNode is null OR endNode is NULL
+		//	Raise error
+		cout << "Search Validation Error: startNode is not valid." << endl;
+		return vector<Node*>();
+	}
+	else if (endNode == nullptr) {
+		cout << "Search Validation Error: endNode is not valid." << endl;
+		return vector<Node*>();
+	}
+
+	if (&startNode == &endNode) {	//	If startNode == endNode
+		//	Return empty path
+		vector<Node*> emptyPath;
+		emptyPath.push_back(startNode);
+		return emptyPath;
+	}
+
+	//	Initialise the starting node
+	startNode->gScore = 0;
+	startNode->previous = nullptr;
+
+	//	Create our temporary lists for storing nodes we're visiting/visited
+	vector<Node*> openList;
+	vector<Node*> closedList;
+
+	//	Add startNode to openList
+	openList.push_back(startNode);
+
+	//	While openList is not empty
+	while (!openList.empty()) {
+		//	Sort openList based on gScore
+		sort(openList.begin(), openList.end(), ASort);
+
+		Node* currentNode = *openList.begin();
+
+		//	If we visit the endNode, we can conclude early
+		//	This is a performance optimisation, and can miss more optimal paths
+		if (currentNode == endNode) {
+			break;
+		}
+
+		//	Remove currentNode from openList
+		openList.erase(openList.begin());
+
+		//	Add currentNode to closedList
+		closedList.push_back(currentNode);
+
+		//	For all connections c in currentNode
+		for (Edge c : currentNode->m_connections) {
+			//	If target is in closedList
+			if (find(closedList.begin(), closedList.end(), c.target) != closedList.end()) {
+				//	Don't process target, it has already been processed.
+				continue;
+			}
+
+			//	Calculate the gScore for the target.
+			float gScore = currentNode->gScore + c.cost;
+			float hScore = AHeuristic(c.target, endNode, 'm');
+			float fScore = gScore + hScore;
+
+			//	If target is not in openList, process target.
+			if (find(openList.begin(), openList.end(), c.target) == openList.end()) {
+				//	This target has not been visited, so we must
+				//update its gScore to the value we've calculated,
+				//update its parent, and add it to the openList.
+				c.target->gScore = gScore;
+				c.target->fScore = fScore;
+				c.target->SetPrevious(*currentNode);
+				openList.push_back(c.target);
+			}
+			//	Target is already in the openList with a valid gScore.
+			//	So compare the calculated gScore with the existing
+			//to find the shorter path.
+			else if (currentNode->gScore < c.target->gScore) {
+				c.target->gScore = currentNode->gScore;
+				c.target->fScore = currentNode->fScore;
+				c.target->SetPrevious(*currentNode);
+			}
+		}
+	}
+
+	//	Create path in reverse from endNode to startNode
+	vector<Node*> path;
+	Node* currentNode = endNode;
+
+	while (currentNode != nullptr) {
 		path.insert(path.begin(), currentNode);
 		currentNode = currentNode->previous;
 	}
