@@ -43,7 +43,7 @@ int main()
 
 	//---	GENERATE AGENT
 
-	BasePathAgent agent(start, 64);
+	BasePathAgent agent(start, 100);
 
 	//---	LOOP
 
@@ -91,6 +91,8 @@ int main()
 	//---	UNINITIALISE
 
 	CloseWindow();
+
+	system("pause");
 
 	return 0;
 }
