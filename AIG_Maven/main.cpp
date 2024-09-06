@@ -7,9 +7,12 @@
 #include "Pathfinding.h"
 #include <string>
 #include "BasePathAgent.h"
+#include "Agent.h"
+#include "GoToPointBehaviour.h"
 
 using namespace Pathfinding;
 using namespace std;
+using namespace Decision;
 
 int main()
 {
@@ -43,7 +46,10 @@ int main()
 
 	//---	GENERATE AGENT
 
-	BasePathAgent agent(start, 100);
+	//BasePathAgent agent(start, 100);
+
+	Agent dAgent(&map, new GoToPointBehaviour());
+	dAgent.SetStartNode(start);
 
 	//---	LOOP
 
@@ -64,23 +70,15 @@ int main()
 
 		map.Draw();
 		//DrawPath(nodeMapPath, lineColour);
-		DrawPath(agent.m_path, lineColour);
+		DrawPath(dAgent.m_path, lineColour);
 
-		if (IsMouseButtonPressed(0)) {
-			Vector2 mousePos = GetMousePosition();
-			//start = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
-			//nodeMapPath = DijkstrasSearch(start, end);
-			Node* end = map.GetClosestNode(glm::vec2(mousePos.x,mousePos.y));
-			agent.GoToNode(end);
-		}
-		//else if (IsMouseButtonPressed(1)) {
-		//	//Vector2 mousePos = GetMousePosition();
-		//	//end = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
+		//if (IsMouseButtonPressed(0)) {
+		//	Vector2 mousePos = GetMousePosition();
+		//	//start = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
 		//	//nodeMapPath = DijkstrasSearch(start, end);
-		//	agent.m_path.clear();
+		//	Node* end = map.GetClosestNode(glm::vec2(mousePos.x,mousePos.y));
+		//	agent.GoToNode(end);
 		//}
-
-
 
 		agent.Update(deltaTime);
 		agent.Draw();
