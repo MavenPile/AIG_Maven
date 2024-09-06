@@ -198,7 +198,7 @@ namespace Pathfinding
 		if (&startNode == &endNode) {	//	If startNode == endNode
 			//	Return empty path
 			vector<Node*> emptyPath;
-			emptyPath.push_back(startNode);
+			//emptyPath.push_back(startNode);
 			return emptyPath;
 		}
 
@@ -421,5 +421,22 @@ namespace Pathfinding
 		if (y < 0 || y >= m_height) { return nullptr; }
 
 		return GetNode(x, y);
+	}
+
+	Node* NodeMap::GetRandomNode()
+	{
+		Node* node = nullptr;
+		
+		while (node == nullptr) {
+			int x = rand() % m_width;
+			int y = rand() % m_height;
+			node = GetNode(x, y);
+
+			//node = GetClosestNode(glm::vec2(x, y));
+		}
+		
+		std::cout << "Found valid random node at X: " << node->m_position.x << ". Y: " << node->m_position.y << std::endl;
+
+		return node;
 	}
 }

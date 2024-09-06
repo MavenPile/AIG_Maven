@@ -24,7 +24,12 @@ namespace Decision
 		void Update(float deltaTime);
 		void Draw();
 		void GoTo(glm::vec2 point);
+
 		void SetNode(Node* node);
 		BasePathAgent* GetBaseAgent();
+
+		bool PathComplete();
+
+		NodeMap* GetMap();
 	};
 }

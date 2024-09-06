@@ -2,6 +2,7 @@
 #include "Behaviour.h"
 #include "BasePathAgent.h"
 #include "Pathfinding.h"
+#include <iostream>
 
 using namespace Pathfinding;
 
@@ -35,5 +36,20 @@ namespace Decision
 	BasePathAgent* Agent::GetBaseAgent()
 	{
 		return &m_pathAgent;
+	}
+
+	bool Agent::PathComplete()
+	{
+		if (m_pathAgent.GetPath().empty())
+		{
+			std::cout << "Verified path is complete..." << std::endl;
+		}
+
+		return m_pathAgent.GetPath().empty();
+	}
+
+	NodeMap* Agent::GetMap()
+	{
+		return m_nodeMap;
 	}
 }

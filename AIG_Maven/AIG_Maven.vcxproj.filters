@@ -33,7 +33,7 @@
     <ClCompile Include="Behaviour.h">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="GoToPointBehaviour.cpp">
+    <ClCompile Include="Behaviours.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,7 +56,7 @@
     <ClInclude Include="Agent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GoToPointBehaviour.h">
+    <ClInclude Include="Behaviours.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

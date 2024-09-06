@@ -130,7 +130,7 @@
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="BasePathAgent.cpp" />
     <ClCompile Include="Behaviour.h" />
-    <ClCompile Include="GoToPointBehaviour.cpp" />
+    <ClCompile Include="Behaviours.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="StateMachine.cpp" />
@@ -141,7 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Agent.h" />
     <ClInclude Include="BasePathAgent.h" />
-    <ClInclude Include="GoToPointBehaviour.h" />
+    <ClInclude Include="Behaviours.h" />
     <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateMachine.h" />

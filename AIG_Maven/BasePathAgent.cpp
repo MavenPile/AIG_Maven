@@ -20,14 +20,24 @@ namespace Pathfinding
 
 	void BasePathAgent::Update(float deltaTime) {
 		//	If path is empty, return
-		if (m_path.empty()) { std::cout << "Path empty..." << std::endl; return; }
+		if (m_path.empty()) { /*std::cout << "Path empty..." << std::endl;*/ return; }
 
 		//	Calculate the distance to the target node
 		glm::vec2 dispToNext = m_path[m_currentTargetIndex]->m_position - m_position;	//	Vector
 		float distToNext = sqrt(dispToNext.x * dispToNext.x + dispToNext.y * dispToNext.y);	//	Magnitude
 
+
+		distToNext = glm::distance(m_position, m_path[m_currentTargetIndex]->m_position);
+
 		//	Find unit vector to target node
-		glm::vec2 dispNormal = dispToNext / distToNext;	//	Vector divided by magnitude
+		//glm::vec2 dispNormal = dispToNext / distToNext;	//	Vector divided by magnitude
+		
+		glm::vec2 dispNormal = glm::normalize(dispToNext);
+
+		if (glm::isnan(dispNormal.x))
+		{
+			dispNormal = glm::vec2(0, 0);
+		}
 
 		//	Subtract speed * deltaTime from the remaining distance to the target node
 		float frameMovement = distToNext - m_speed * deltaTime;	//	Frame movement

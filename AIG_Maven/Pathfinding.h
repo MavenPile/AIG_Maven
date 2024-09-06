@@ -58,5 +58,7 @@ namespace Pathfinding
 		Node* GetNode(int x, int y);
 		void Draw();
 		Node* GetClosestNode(glm::vec2 worldPos);
+
+		Node* GetRandomNode();
 	};
 }

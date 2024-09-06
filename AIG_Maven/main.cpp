@@ -3,12 +3,11 @@
 #define RAYGUI_IMPLEMENTATION
 #define RAYGUI_SUPPORT_ICONS
 
-//#include "raygui.h"
 #include "Pathfinding.h"
 #include <string>
 #include "BasePathAgent.h"
 #include "Agent.h"
-#include "GoToPointBehaviour.h"
+#include "Behaviours.h"
 
 using namespace Pathfinding;
 using namespace std;
@@ -21,7 +20,7 @@ int main()
 	int screenWidth = 1600;
 	int screenHeight = 900;
 
-	InitWindow(screenWidth, screenHeight, "AIG");
+	InitWindow(screenWidth, screenHeight, "AI For Games");
 
 	SetTargetFPS(60);
 
@@ -51,9 +50,13 @@ int main()
 	Agent dAgent(&map, new GoToPointBehaviour());
 	dAgent.SetNode(start);
 
+	Agent wAgent(&map, new WanderBehaviour());
+	wAgent.SetNode(end);
+
 	//---	LOOP
 
 	float deltaTime;
+
 	while (!WindowShouldClose())
 	{
 		deltaTime = GetFrameTime();		
@@ -82,6 +85,9 @@ int main()
 
 		dAgent.Update(deltaTime);
 		dAgent.Draw();
+
+		wAgent.Update(deltaTime);
+		wAgent.Draw();
 
 		EndDrawing();
 	}
