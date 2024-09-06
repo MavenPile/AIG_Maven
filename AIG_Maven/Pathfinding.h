@@ -5,7 +5,7 @@
 #include <string>
 #include <Color.hpp>
 
-namespace AIForGames
+namespace Pathfinding
 {
 	struct Node;
 
@@ -59,23 +59,4 @@ namespace AIForGames
 		void Draw();
 		Node* GetClosestNode(glm::vec2 worldPos);
 	};
-
-	//	AGENT
-	//class Agent
-	//{
-	//	glm::vec2 m_position;
-
-	//	std::vector<Node*> m_path;
-	//	int m_currentIndex;
-	//	Node* m_currentNode;
-
-	//	float m_speed;
-
-	//public:
-	//	Agent();
-	//	
-	//	void Update(float deltaTime);
-	//	void GoToNode(Node* node);
-	//	void Draw();
-	//};
 }

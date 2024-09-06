@@ -8,7 +8,7 @@
 #include <string>
 #include "BasePathAgent.h"
 
-using namespace AIForGames;
+using namespace Pathfinding;
 using namespace std;
 
 int main()

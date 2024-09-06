@@ -2,7 +2,7 @@
 #include <vector>
 #include "glm/glm.hpp"
 
-namespace AIForGames
+namespace Pathfinding
 {
 	struct Node;
 	

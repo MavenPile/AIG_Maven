@@ -2,23 +2,23 @@
 #include "Pathfinding.h"
 #include <iostream>
 
-namespace AIForGames
+namespace Pathfinding
 {
-	AIForGames::BasePathAgent::BasePathAgent() {
+	BasePathAgent::BasePathAgent() {
 		m_currentTargetNode = nullptr;
 		m_speed = 0;
 		m_position = glm::vec2(0, 0);
 		m_currentTargetIndex = 0;
 	}
 
-	AIForGames::BasePathAgent::BasePathAgent(Node* startNode, float speed) {
+	BasePathAgent::BasePathAgent(Node* startNode, float speed) {
 		m_currentTargetNode = startNode;
 		m_speed = speed;
 		m_position = m_currentTargetNode->m_position;
 		m_currentTargetIndex = 0;
 	}
 
-	void AIForGames::BasePathAgent::Update(float deltaTime) {
+	void BasePathAgent::Update(float deltaTime) {
 		//	If path is empty, return
 		if (m_path.empty()) { std::cout << "Path empty..." << std::endl; return; }
 
@@ -83,17 +83,17 @@ namespace AIForGames
 		}
 	}
 
-	void AIForGames::BasePathAgent::GoToNode(Node* node) {
+	void BasePathAgent::GoToNode(Node* node) {
 		m_path = AStarSearch(m_currentTargetNode, node);
 		m_currentTargetIndex = 0;
 	}
 
-	void AIForGames::BasePathAgent::Draw() {
+	void BasePathAgent::Draw() {
 		DrawCircle(m_position.x, m_position.y, 50, { 255,255,0,255 });
 		//std::cout << "Drawing Agent..." << std::endl;
 	}
 
-	std::vector<Node*> AIForGames::BasePathAgent::GetPath() { return m_path; }
+	std::vector<Node*> BasePathAgent::GetPath() { return m_path; }
 
-	const std::vector<Node*> AIForGames::BasePathAgent::GetPath() const { return m_path; }
+	const std::vector<Node*> BasePathAgent::GetPath() const { return m_path; }
 }
