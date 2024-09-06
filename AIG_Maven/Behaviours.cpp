@@ -25,4 +25,17 @@ namespace Decision
 			agent->GoTo(glm::vec2(mousePos.x, mousePos.y));
 		}
 	}
+
+	void FollowingBehaviour::Update(Agent* agent, float deltaTime)
+	{
+		//	Check if the agent has moved significantly from its last position
+		//	If so we want to repath towards it
+		Agent* target;
+
+		float dist;
+		if (dist > agent->GetMap()->GetCellSize()) {
+			m_lastTargetPosition = target->GetPosition();
+			agent->GoTo(m_lastTargetPosition);
+		}
+	}
 }

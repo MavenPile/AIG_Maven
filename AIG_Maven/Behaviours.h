@@ -14,4 +14,13 @@ namespace Decision
 	public:
 		virtual void Update(Agent* agent, float deltaTime) override;
 	};
+
+	class FollowingBehaviour : public Behaviour
+	{
+	private:
+		Vector2 m_lastTargetPosition;
+	
+	public:
+		virtual void Update(Agent* agent, float deltaTime) override;
+	};
 }
