@@ -1,6 +1,6 @@
 #pragma once
 
-namespace FSM
+namespace FSMDemo
 {
 	class GameObject;
 	class State;

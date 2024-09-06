@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-namespace FSM
+namespace FSMDemo
 {
 	class State;
 	class GameObject;

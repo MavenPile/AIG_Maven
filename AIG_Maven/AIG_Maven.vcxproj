@@ -130,7 +130,6 @@
     <ClCompile Include="BasePathAgent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
-    <ClCompile Include="State.cpp" />
     <ClCompile Include="StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
