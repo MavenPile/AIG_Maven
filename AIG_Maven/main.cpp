@@ -49,7 +49,7 @@ int main()
 	//BasePathAgent agent(start, 100);
 
 	Agent dAgent(&map, new GoToPointBehaviour());
-	dAgent.SetStartNode(start);
+	dAgent.SetNode(start);
 
 	//---	LOOP
 
@@ -70,7 +70,7 @@ int main()
 
 		map.Draw();
 		//DrawPath(nodeMapPath, lineColour);
-		DrawPath(dAgent.m_path, lineColour);
+		DrawPath(dAgent.GetBaseAgent()->m_path, lineColour);
 
 		//if (IsMouseButtonPressed(0)) {
 		//	Vector2 mousePos = GetMousePosition();
@@ -80,8 +80,8 @@ int main()
 		//	agent.GoToNode(end);
 		//}
 
-		agent.Update(deltaTime);
-		agent.Draw();
+		dAgent.Update(deltaTime);
+		dAgent.Draw();
 
 		EndDrawing();
 	}

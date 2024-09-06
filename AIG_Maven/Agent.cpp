@@ -26,13 +26,14 @@ namespace Decision
 		m_pathAgent.GoToNode(end);
 	}
 
-	NodeMap* Agent::GetPath()
+	void Agent::SetNode(Node* node)
 	{
-		return m_nodeMap;
+		m_pathAgent.m_currentTargetNode = node;
+		m_pathAgent.m_position = node->m_position;
 	}
 
-	void Agent::SetStartNode(Node* startNode)
+	BasePathAgent* Agent::GetBaseAgent()
 	{
-		m_pathAgent.m_currentTargetNode = startNode;
+		return &m_pathAgent;
 	}
 }

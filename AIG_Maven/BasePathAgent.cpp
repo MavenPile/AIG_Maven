@@ -6,7 +6,7 @@ namespace Pathfinding
 {
 	BasePathAgent::BasePathAgent() {
 		m_currentTargetNode = nullptr;
-		m_speed = 0;
+		m_speed = 100;
 		m_position = glm::vec2(0, 0);
 		m_currentTargetIndex = 0;
 	}
