@@ -38,12 +38,12 @@ int main()
 
 	Node* start = map.GetNode(1, 1);
 	Node* end = map.GetNode(10, 2);
-	std::vector<Node*> nodeMapPath = DijkstrasSearch(start, end);
+	std::vector<Node*> nodeMapPath = AStarSearch(start, end);
 	Color lineColour = { 255,255,255,255 };
 
 	//---	GENERATE AGENT
 
-	BasePathAgent agent(start, 64);
+	BasePathAgent agent(start, 100);
 
 	//---	LOOP
 
@@ -91,6 +91,8 @@ int main()
 	//---	UNINITIALISE
 
 	CloseWindow();
+
+	system("pause");
 
 	return 0;
 }
