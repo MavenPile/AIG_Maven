@@ -127,10 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BAgent.cpp" />
     <ClCompile Include="BasePathAgent.cpp" />
-    <ClCompile Include="Behaviour.cpp" />
-    <ClCompile Include="GotoPointBehaviour.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="State.cpp" />
@@ -140,10 +137,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BAgent.h" />
     <ClInclude Include="BasePathAgent.h" />
-    <ClInclude Include="Behaviour.h" />
-    <ClInclude Include="GotoPointBehaviour.h" />
     <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateMachine.h" />
