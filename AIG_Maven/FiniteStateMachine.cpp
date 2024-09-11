@@ -1,4 +1,5 @@
 #include "FiniteStateMachine.h"
+#include <iostream>
 
 namespace FSM
 {
@@ -21,11 +22,15 @@ namespace FSM
 		//	The vectors handle their own memory
 	}
 
-	void State::Update(Agent* agent, float deltaTime)
-	{
-		for (Behaviour* b : m_behaviours)
-		{
+	void State::Update(Agent* agent, float deltaTime)	{
+		for (Behaviour* b : m_behaviours)	{
 			b->Update(agent, deltaTime);
+		}
+	}
+
+	void State::Enter(Agent* agent)	{
+		for (Behaviour* b : m_behaviours)	{
+			b->Enter(agent);
 		}
 	}
 
@@ -72,6 +77,8 @@ namespace FSM
 
 	void FiniteStateMachine::Enter(Agent* agent)
 	{
+		std::cout << "Entering State..." << std::endl;
+		
 		m_currentState->Enter(agent);
 	}
 }

@@ -16,8 +16,13 @@ namespace FSM
 
 	void WanderBehaviour::Enter(Agent* agent) {
 		//	Blue when wandering
+		std::cout << "Entering Wander Behaviour..." << std::endl;
 		agent->SetColour({ 0,0,255,255 });
-		agent->Reset();
+		//	We don't want to reset the path when entering a wandering behaviour,
+		//because the agent should still go to where it last tried to pathfind
+		//to. For example, it may have come from a following behaviour, in which
+		//case, it would want to go to where it last "saw" the player.
+		//agent->Reset();
 	}
 
 	void GoToPointBehaviour::Update(Agent* agent, float deltaTime)	{
@@ -45,6 +50,7 @@ namespace FSM
 
 	void FollowingBehaviour::Enter(Agent* agent)	{
 		//	Red when following
+		std::cout << "Entering Follow Behaviour..." << std::endl;
 		agent->SetColour({ 255,0,0,255 });
 		agent->Reset();
 	}

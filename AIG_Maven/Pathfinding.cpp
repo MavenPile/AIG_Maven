@@ -435,7 +435,7 @@ namespace Pathfinding
 			//node = GetClosestNode(glm::vec2(x, y));
 		}
 		
-		std::cout << "Found valid random node at X: " << node->m_position.x << ". Y: " << node->m_position.y << std::endl;
+		//std::cout << "Found valid random node at X: " << node->m_position.x << ". Y: " << node->m_position.y << std::endl;
 
 		return node;
 	}

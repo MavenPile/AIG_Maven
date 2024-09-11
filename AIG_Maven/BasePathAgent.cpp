@@ -47,17 +47,17 @@ namespace Pathfinding
 		//	Check for overshoot
 		if (frameMovement < 0.f)	//	We have overshot the target node
 		{
-			std::cout << "Overshot Node..." << std::endl;
+			//std::cout << "Overshot Node..." << std::endl;
 			
 			m_currentTargetIndex++;
 
-			std::cout << "Target Index: " << m_currentTargetIndex << std::endl;
-			std::cout << "Path Length: " << m_path.size() << std::endl;
+			//std::cout << "Target Index: " << m_currentTargetIndex << std::endl;
+			//std::cout << "Path Length: " << m_path.size() << std::endl;
 
 			//	Check if we've reached the final node
 			if (m_currentTargetIndex >= m_path.size())	//	We've reached the final node
 			{
-				std::cout << "Reached final node..." << std::endl;
+				//std::cout << "Reached final node..." << std::endl;
 
 				//	Snap position to node, and clear the path
 				m_position = m_currentTargetNode->m_position;
@@ -65,22 +65,22 @@ namespace Pathfinding
 			}
 			else	//	We have NOT reached the final node
 			{
-				std::cout << "Reached a node..." << std::endl;
+				//std::cout << "Reached a node..." << std::endl;
 				
 				m_currentTargetNode = m_path[m_currentTargetIndex];
 
 				//	Calculate distance to target node from new current node
 				dispToNext = m_currentTargetNode->m_position - m_position;
-				std::cout << "Difference to next: " << dispToNext.x << " " << dispToNext.y << std::endl;
+				//std::cout << "Difference to next: " << dispToNext.x << " " << dispToNext.y << std::endl;
 				distToNext = sqrt(dispToNext.x * dispToNext.x + dispToNext.y * dispToNext.y);
-				std::cout << "Distance to next: " << distToNext << std::endl;
+				//std::cout << "Distance to next: " << distToNext << std::endl;
 
 				//	Calculate unit vector to target node
 				dispNormal = dispToNext / distToNext;
 
 				//	Move agent to new position
 				m_position = m_currentTargetNode->m_position - distToNext * dispNormal;
-				std::cout << "New position: X: " << m_position.x << ", Y: " << m_position.y << std::endl;
+				//std::cout << "New position: X: " << m_position.x << ", Y: " << m_position.y << std::endl;
 			}
 		}
 		else	//	We have NOT overshot the node

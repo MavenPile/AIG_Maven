@@ -21,7 +21,7 @@ namespace FSM
 		State(Behaviour* behaviour) { m_behaviours.push_back(behaviour); }
 		~State();
 		virtual void Update(Agent* agent, float deltaTime);
-		virtual void Enter(Agent* agent) {}
+		virtual void Enter(Agent* agent);
 		virtual void Exit(Agent* agent) {}
 
 		std::vector<Transition*> GetTransitions() { return m_transitions; }
