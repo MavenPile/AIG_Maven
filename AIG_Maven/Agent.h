@@ -5,7 +5,7 @@
 
 using namespace Pathfinding;
 
-namespace Decision
+namespace FSM
 {
 	class Behaviour;
 	
@@ -15,10 +15,11 @@ namespace Decision
 		Behaviour* m_current;
 		NodeMap* m_nodeMap;
 		Color m_colour;
+		Agent* m_targetAgent = nullptr;
 
 	public:
 		Agent() : m_current(nullptr), m_nodeMap(nullptr), m_colour({ 255,255,0,255 }) {}
-		Agent(NodeMap* _nodeMap, Behaviour* _behaviour) : m_current(_behaviour), m_nodeMap(_nodeMap), m_colour({ 255,255,0,255 }) {}
+		Agent(NodeMap* _nodeMap, Behaviour* _behaviour);
 		~Agent() { delete m_current; }
 
 		void Update(float deltaTime);
@@ -31,5 +32,15 @@ namespace Decision
 		bool PathComplete();
 
 		NodeMap* GetMap();
+
+		Agent* GetStoredTarget() { return m_targetAgent; }
+		void SetStoredTarget(Agent* target) { m_targetAgent = target; }
+
+		glm::vec2 GetPosition() { return m_pathAgent.m_position; }
+
+		void Reset() { m_pathAgent.m_path.clear(); }
+		void SetColour(Color colour) { m_colour = colour; }
+
+		void SetSpeed(float speed) { m_pathAgent.SetSpeed(speed); }
 	};
 }

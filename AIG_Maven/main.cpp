@@ -8,10 +8,12 @@
 #include "BasePathAgent.h"
 #include "Agent.h"
 #include "Behaviours.h"
+#include "Conditions.h"
+#include "FiniteStateMachine.h"
 
 using namespace Pathfinding;
 using namespace std;
-using namespace Decision;
+using namespace FSM;
 
 int main()
 {
@@ -43,15 +45,40 @@ int main()
 	std::vector<Node*> nodeMapPath = AStarSearch(start, end);
 	Color lineColour = { 255,255,255,255 };
 
+	//---	FINITE STATE MACHINE
+
+	DistanceCondition* closerThan5 = new DistanceCondition(5.0f * map.GetCellSize(), true);
+	DistanceCondition* furtherThan7 = new DistanceCondition(7.0f * map.GetCellSize(), false);
+
+	State* wanderState = new State(new WanderBehaviour());
+	State* followState = new State(new FollowingBehaviour());
+
+	wanderState->AddTransition(closerThan5, followState);
+	followState->AddTransition(furtherThan7, wanderState);
+
+	FiniteStateMachine* fsm = new FiniteStateMachine(wanderState);
+	fsm->AddState(wanderState);
+	fsm->AddState(followState);
+
 	//---	GENERATE AGENT
 
 	//BasePathAgent agent(start, 100);
 
 	Agent dAgent(&map, new GoToPointBehaviour());
 	dAgent.SetNode(start);
+	dAgent.SetSpeed(100);
 
-	Agent wAgent(&map, new WanderBehaviour());
-	wAgent.SetNode(end);
+	//Agent wAgent(&map, new WanderBehaviour());
+	//wAgent.SetNode(end);
+
+	//Agent fAgent(&map, new SelectorBehaviour(new FollowingBehaviour(),new WanderBehaviour()));
+	//fAgent.SetNode(start);
+	//fAgent.SetStoredTarget(&wAgent);
+
+	Agent fsmAgent(&map, (Behaviour*)fsm);
+	fsmAgent.SetNode(map.GetRandomNode());
+	fsmAgent.SetStoredTarget(&dAgent);
+	fsmAgent.SetSpeed(50);
 
 	//---	LOOP
 
@@ -74,6 +101,7 @@ int main()
 		map.Draw();
 		//DrawPath(nodeMapPath, lineColour);
 		DrawPath(dAgent.GetBaseAgent()->m_path, lineColour);
+		DrawPath(fsmAgent.GetBaseAgent()->m_path, { 255,0,0,255 });
 
 		//if (IsMouseButtonPressed(0)) {
 		//	Vector2 mousePos = GetMousePosition();
@@ -86,8 +114,14 @@ int main()
 		dAgent.Update(deltaTime);
 		dAgent.Draw();
 
-		wAgent.Update(deltaTime);
-		wAgent.Draw();
+		//wAgent.Update(deltaTime);
+		//wAgent.Draw();
+
+		//fAgent.Update(deltaTime);
+		//fAgent.Draw();
+
+		fsmAgent.Update(deltaTime);
+		fsmAgent.Draw();
 
 		EndDrawing();
 	}

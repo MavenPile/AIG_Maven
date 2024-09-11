@@ -6,8 +6,12 @@
 
 using namespace Pathfinding;
 
-namespace Decision
+namespace FSM
 {
+	Agent::Agent(NodeMap* _nodeMap, Behaviour* _behaviour) : m_current(_behaviour), m_nodeMap(_nodeMap), m_colour({ 255,255,0,255 })	{
+		m_current->Enter(this);
+	}
+
 	void Agent::Update(float deltaTime)
 	{
 		if (m_current)	{
@@ -18,7 +22,8 @@ namespace Decision
 
 	void Agent::Draw()
 	{
-		m_pathAgent.Draw();
+		//m_pathAgent.Draw();
+		DrawCircle(m_pathAgent.m_position.x, m_pathAgent.m_position.y, 50, m_colour);
 	}
 
 	void Agent::GoTo(glm::vec2 point)

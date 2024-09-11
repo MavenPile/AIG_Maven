@@ -131,6 +131,9 @@
     <ClCompile Include="BasePathAgent.cpp" />
     <ClCompile Include="Behaviour.h" />
     <ClCompile Include="Behaviours.cpp" />
+    <ClCompile Include="Condition.cpp" />
+    <ClCompile Include="Conditions.cpp" />
+    <ClCompile Include="FiniteStateMachine.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="StateMachine.cpp" />
@@ -142,6 +145,9 @@
     <ClInclude Include="Agent.h" />
     <ClInclude Include="BasePathAgent.h" />
     <ClInclude Include="Behaviours.h" />
+    <ClInclude Include="Condition.h" />
+    <ClInclude Include="Conditions.h" />
+    <ClInclude Include="FiniteStateMachine.h" />
     <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateMachine.h" />

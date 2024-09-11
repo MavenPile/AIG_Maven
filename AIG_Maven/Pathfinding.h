@@ -60,5 +60,7 @@ namespace Pathfinding
 		Node* GetClosestNode(glm::vec2 worldPos);
 
 		Node* GetRandomNode();
+
+		float GetCellSize() { return m_cellSize; }
 	};
 }

@@ -17,7 +17,7 @@ namespace Pathfinding
 
 	public:
 		BasePathAgent();
-		BasePathAgent(Node* startNode, float speed);
+		BasePathAgent(Node* startNode);
 
 		void Update(float deltaTime);
 		void GoToNode(Node* node);
@@ -25,5 +25,7 @@ namespace Pathfinding
 
 		std::vector<Node*> GetPath();
 		const std::vector<Node*> GetPath() const;
+
+		void SetSpeed(float speed) { m_speed = speed; }
 	};
 }
