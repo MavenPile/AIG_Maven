@@ -10,6 +10,7 @@
 #include "Behaviours.h"
 #include "Conditions.h"
 #include "FiniteStateMachine.h"
+#include "UtilityAI.h"
 
 using namespace Pathfinding;
 using namespace std;
@@ -60,16 +61,23 @@ int main()
 	fsm->AddState(wanderState);
 	fsm->AddState(followState);
 
+	//---	UTILITYAI
+
+	UtilityAI* utilityAI = new UtilityAI();
+	utilityAI->AddBehaviour(new WanderBehaviour());
+	utilityAI->AddBehaviour(new FollowingBehaviour());
+
 	//---	GENERATE AGENT
 
 	//BasePathAgent agent(start, 100);
 
-	Agent dAgent(&map, new GoToPointBehaviour());
-	dAgent.SetNode(start);
-	dAgent.SetSpeed(100);
+	//Agent dAgent(&map, new GoToPointBehaviour());
+	//dAgent.SetNode(start);
+	//dAgent.SetSpeed(100);
 
-	//Agent wAgent(&map, new WanderBehaviour());
-	//wAgent.SetNode(end);
+	Agent wAgent(&map, new WanderBehaviour());
+	wAgent.SetNode(start);
+	wAgent.SetSpeed(100);
 
 	//Agent fAgent(&map, new SelectorBehaviour(new FollowingBehaviour(),new WanderBehaviour()));
 	//fAgent.SetNode(start);
@@ -77,8 +85,13 @@ int main()
 
 	Agent fsmAgent(&map, (Behaviour*)fsm);
 	fsmAgent.SetNode(map.GetRandomNode());
-	fsmAgent.SetStoredTarget(&dAgent);
+	fsmAgent.SetStoredTarget(&wAgent);
 	fsmAgent.SetSpeed(50);
+
+	Agent uaiAgent(&map, utilityAI);
+	uaiAgent.SetNode(end);
+	uaiAgent.SetStoredTarget(&fsmAgent);
+	uaiAgent.SetSpeed(30);
 
 	//---	LOOP
 
@@ -100,8 +113,6 @@ int main()
 
 		map.Draw();
 		//DrawPath(nodeMapPath, lineColour);
-		DrawPath(dAgent.GetBaseAgent()->m_path, lineColour);
-		DrawPath(fsmAgent.GetBaseAgent()->m_path, { 255,0,0,255 });
 
 		//if (IsMouseButtonPressed(0)) {
 		//	Vector2 mousePos = GetMousePosition();
@@ -111,17 +122,24 @@ int main()
 		//	agent.GoToNode(end);
 		//}
 
-		dAgent.Update(deltaTime);
-		dAgent.Draw();
+		DrawPath(wAgent.GetBaseAgent()->m_path, { 255,255,255,255 });
+		DrawPath(fsmAgent.GetBaseAgent()->m_path, { 255,0,0,255 });
+		DrawPath(uaiAgent.GetBaseAgent()->m_path, { 0,255,0,255 });
 
-		//wAgent.Update(deltaTime);
-		//wAgent.Draw();
+		//dAgent.Update(deltaTime);
+		//dAgent.Draw();
+
+		wAgent.Update(deltaTime);
+		wAgent.Draw();
 
 		//fAgent.Update(deltaTime);
 		//fAgent.Draw();
 
 		fsmAgent.Update(deltaTime);
 		fsmAgent.Draw();
+
+		uaiAgent.Update(deltaTime);
+		uaiAgent.Draw();
 
 		EndDrawing();
 	}

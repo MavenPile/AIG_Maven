@@ -9,6 +9,7 @@ namespace FSM
 	public:
 		virtual void Update(Agent* agent, float deltaTime) override;
 		virtual void Enter(Agent* agent) override;
+		virtual float Evaluate(Agent* agent) override;
 	};
 
 	class GoToPointBehaviour : public Behaviour
@@ -25,6 +26,7 @@ namespace FSM
 	public:
 		virtual void Update(Agent* agent, float deltaTime) override;
 		virtual void Enter(Agent* agent) override;
+		virtual float Evaluate(Agent* agent) override;
 	};
 
 	class SelectorBehaviour : public Behaviour

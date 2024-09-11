@@ -25,6 +25,18 @@ namespace FSM
 		//agent->Reset();
 	}
 
+	float WanderBehaviour::Evaluate(Agent* agent) {
+		Agent* target = agent->GetStoredTarget();
+		float dist = glm::distance(target->GetPosition(), agent->GetPosition());
+
+		float eval = dist;
+		if (eval < 0) {
+			eval = 0;
+		}
+
+		return eval;
+	}
+
 	void GoToPointBehaviour::Update(Agent* agent, float deltaTime)	{
 		//	Read mouseclicks, left for start node, right for end node
 		if (IsMouseButtonPressed(0))
@@ -53,6 +65,18 @@ namespace FSM
 		std::cout << "Entering Follow Behaviour..." << std::endl;
 		agent->SetColour({ 255,0,0,255 });
 		agent->Reset();
+	}
+
+	float FollowingBehaviour::Evaluate(Agent* agent)	{
+		Agent* target = agent->GetStoredTarget();
+		float dist = glm::distance(target->GetPosition(), agent->GetPosition());
+
+		float eval = 10 * agent->GetMap()->GetCellSize() - dist;
+		if (eval < 0) {
+			eval = 0;
+		}
+
+		return eval;
 	}
 
 	void SelectorBehaviour::Update(Agent* agent, float deltaTime)	{
