@@ -41,7 +41,7 @@ namespace FSM
 		//	Read mouseclicks, left for start node, right for end node
 		if (IsMouseButtonPressed(0))
 		{
-			std::cout << "Mouse button 0 pressed..." << std::endl;
+			//std::cout << "Mouse button 0 pressed..." << std::endl;
 			Vector2 mousePos = GetMousePosition();
 			agent->GoTo(glm::vec2(mousePos.x, mousePos.y));
 		}

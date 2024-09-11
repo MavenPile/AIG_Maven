@@ -31,15 +31,20 @@ int main()
 
 	NodeMap map;
 	vector<string> asciiMap;
-	asciiMap.push_back("000000000000");
-	asciiMap.push_back("010111011100");
-	asciiMap.push_back("010101110110");
-	asciiMap.push_back("010100000000");
-	asciiMap.push_back("010111111110");
-	asciiMap.push_back("010000001000");
-	asciiMap.push_back("011111111110");
-	asciiMap.push_back("000000000000");
-	map.Initialise(asciiMap, 100);
+	asciiMap.push_back("0000000000000000");
+	asciiMap.push_back("0111110111001110");
+	asciiMap.push_back("0101011101111010");
+	asciiMap.push_back("0101000000101010");
+	asciiMap.push_back("0101111111101010");
+	asciiMap.push_back("0101000010001010");
+	asciiMap.push_back("0101011111111010");
+	asciiMap.push_back("0111010000101010");
+	asciiMap.push_back("0100011101101110");
+	asciiMap.push_back("0110110101000010");
+	asciiMap.push_back("0111111111111110");
+	asciiMap.push_back("0000000000000000");
+
+	map.Initialise(asciiMap, 50);
 
 	Node* start = map.GetNode(1, 1);
 	Node* end = map.GetNode(10, 2);
@@ -76,7 +81,7 @@ int main()
 	//dAgent.SetSpeed(100);
 
 	Agent wAgent(&map, new WanderBehaviour());
-	wAgent.SetNode(start);
+	wAgent.SetNode(map.GetRandomNode());
 	wAgent.SetSpeed(100);
 
 	//Agent fAgent(&map, new SelectorBehaviour(new FollowingBehaviour(),new WanderBehaviour()));
@@ -89,7 +94,7 @@ int main()
 	fsmAgent.SetSpeed(50);
 
 	Agent uaiAgent(&map, utilityAI);
-	uaiAgent.SetNode(end);
+	uaiAgent.SetNode(map.GetRandomNode());
 	uaiAgent.SetStoredTarget(&fsmAgent);
 	uaiAgent.SetSpeed(30);
 

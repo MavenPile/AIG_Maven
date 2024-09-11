@@ -23,7 +23,7 @@ namespace FSM
 	void Agent::Draw()
 	{
 		//m_pathAgent.Draw();
-		DrawCircle(m_pathAgent.m_position.x, m_pathAgent.m_position.y, 50, m_colour);
+		DrawCircle(m_pathAgent.m_position.x, m_pathAgent.m_position.y, 20, m_colour);
 	}
 
 	void Agent::GoTo(glm::vec2 point)
