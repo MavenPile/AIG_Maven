@@ -31,18 +31,22 @@ int main()
 
 	NodeMap map;
 	vector<string> asciiMap;
-	asciiMap.push_back("0000000000000000");
-	asciiMap.push_back("0111110111001110");
-	asciiMap.push_back("0101011101111010");
-	asciiMap.push_back("0101000000101010");
-	asciiMap.push_back("0101111111101010");
-	asciiMap.push_back("0101000010001010");
-	asciiMap.push_back("0101011111111010");
-	asciiMap.push_back("0111010000101010");
-	asciiMap.push_back("0100011101101110");
-	asciiMap.push_back("0110110101000010");
-	asciiMap.push_back("0111111111111110");
-	asciiMap.push_back("0000000000000000");
+	asciiMap.push_back("00000000000000000000");
+	asciiMap.push_back("01111101110011101110");
+	asciiMap.push_back("01010111011110111110");
+	asciiMap.push_back("01010000001010101000");
+	asciiMap.push_back("01011111111010101110");
+	asciiMap.push_back("01010000100010101110");
+	asciiMap.push_back("01010111111110101110");
+	asciiMap.push_back("01110100001011101110");
+	asciiMap.push_back("01000111011001111110");
+	asciiMap.push_back("01101101010000100000");
+	asciiMap.push_back("01111101111111111110");
+	asciiMap.push_back("0011101110000000010");
+	asciiMap.push_back("00110000000111111110");
+	asciiMap.push_back("00111011110111111110");
+	asciiMap.push_back("00011110011111111110");
+	asciiMap.push_back("00000000000000000000");
 
 	map.Initialise(asciiMap, 50);
 
@@ -88,15 +92,15 @@ int main()
 	//fAgent.SetNode(start);
 	//fAgent.SetStoredTarget(&wAgent);
 
-	Agent fsmAgent(&map, (Behaviour*)fsm);
-	fsmAgent.SetNode(map.GetRandomNode());
-	fsmAgent.SetStoredTarget(&wAgent);
-	fsmAgent.SetSpeed(50);
+	//Agent fsmAgent(&map, (Behaviour*)fsm);
+	//fsmAgent.SetNode(map.GetRandomNode());
+	//fsmAgent.SetStoredTarget(&wAgent);
+	//fsmAgent.SetSpeed(50);
 
-	Agent uaiAgent(&map, utilityAI);
-	uaiAgent.SetNode(map.GetRandomNode());
-	uaiAgent.SetStoredTarget(&fsmAgent);
-	uaiAgent.SetSpeed(30);
+	//Agent uaiAgent(&map, utilityAI);
+	//uaiAgent.SetNode(map.GetRandomNode());
+	//uaiAgent.SetStoredTarget(&fsmAgent);
+	//uaiAgent.SetSpeed(30);
 
 	//---	LOOP
 
@@ -128,8 +132,8 @@ int main()
 		//}
 
 		DrawPath(wAgent.GetBaseAgent()->m_path, { 255,255,255,255 });
-		DrawPath(fsmAgent.GetBaseAgent()->m_path, { 255,0,0,255 });
-		DrawPath(uaiAgent.GetBaseAgent()->m_path, { 0,255,0,255 });
+		//DrawPath(fsmAgent.GetBaseAgent()->m_path, { 255,0,0,255 });
+		//DrawPath(uaiAgent.GetBaseAgent()->m_path, { 0,255,0,255 });
 
 		//dAgent.Update(deltaTime);
 		//dAgent.Draw();
@@ -140,11 +144,11 @@ int main()
 		//fAgent.Update(deltaTime);
 		//fAgent.Draw();
 
-		fsmAgent.Update(deltaTime);
-		fsmAgent.Draw();
+		//fsmAgent.Update(deltaTime);
+		//fsmAgent.Draw();
 
-		uaiAgent.Update(deltaTime);
-		uaiAgent.Draw();
+		//uaiAgent.Update(deltaTime);
+		//uaiAgent.Draw();
 
 		EndDrawing();
 	}

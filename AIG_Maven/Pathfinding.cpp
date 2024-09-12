@@ -30,16 +30,22 @@ namespace Pathfinding
 		switch (h) {
 		case 'm':
 			//	Manhattan Distance Heuristic
-			//	Because it leads to better pathing in grid-based maps, like
-			//the one being done for this assignment.
+			//	It leads to better pathing in grid-based maps.
 
 			//	Difference in x and difference in y
 			dx = endNode->m_position.x - currentNode->m_position.x;
 			dy = endNode->m_position.y - currentNode->m_position.y;
 
-			//	Return the sum of calculations
+			//	Return the sum of the differences
 			return dx + dy;
 			break;
+		//case 'd':
+		//	//	Diagonal Shortcut Heuristic
+		//	//	Leads to better pathfinding on grid-based maps with diagonal paths
+
+
+		//	return;
+		//	break;
 		default:
 			//	Regular Distance Heuristic
 			//	Measures distance between current and target node
@@ -49,7 +55,9 @@ namespace Pathfinding
 
 			//	The squared distance between the nodes
 			return disp.x * disp.x + disp.y * disp.y;
-			//	Square rooting the value would be expensive and unecessary, we can avoid it in this case
+			//	Square rooting the value would be expensive and unecessary, we can 
+			//avoid it in this case because we are comparing against another squared
+			//value from this same function.
 			break;
 		}
 	}
@@ -332,7 +340,7 @@ namespace Pathfinding
 			}
 		}
 
-		//	now loop over the nodes, creating connections between each node and its
+		//	Now loop over the nodes, creating connections between each node and its
 		//neighbour to the West and South on the grid. This will link up all nodes
 
 		for (int y = 0; y < m_height; y++)
@@ -363,6 +371,22 @@ namespace Pathfinding
 					{
 						node->ConnectTo(*nodeSouth, 1);
 						nodeSouth->ConnectTo(*node, 1);
+					}
+
+					//	see if there's a node SouthWest of us, checking for array
+					//index overruns, but diagonally this time
+					//	We check at (-1, -1) for the SouthWest diagonal
+					Node* nodeSouthWest = (x == 0 || y == 0) ? nullptr : GetNode(x - 1, y - 1);
+					if (nodeSouthWest) {
+						node->ConnectTo(*nodeSouthWest, 1.414f);
+						nodeSouthWest->ConnectTo(*node, 1.414f);
+					}
+
+					//	And we check at (+1, -1) for the SouthEast diagonal
+					Node* nodeSouthEast = (x == m_width - 1 || y == 0) ? nullptr : GetNode(x + 1, y - 1);
+					if (nodeSouthEast) {
+						node->ConnectTo(*nodeSouthEast, 1.414f);
+						nodeSouthEast->ConnectTo(*node, 1.414f);
 					}
 				}
 			}
