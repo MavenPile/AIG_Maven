@@ -1,6 +1,11 @@
 #pragma once
 #include "Behaviour.h"
 #include "glm/glm.hpp"
+#include "Decision.h"
+
+using namespace Trees;
+
+class Decision;
 
 namespace FSM
 {
@@ -42,5 +47,14 @@ namespace FSM
 
 		virtual void Update(Agent* agent, float deltaTime) override;
 		void SetBehaviour(Behaviour* b, Agent* agent);
+	};
+
+	class DecisionBehaviour : Behaviour
+	{
+	private:
+		Trees::Decision* m_decision;
+
+	public:
+		virtual void Update(Agent* agent, float deltaTime) override;
 	};
 }

@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\VirtualClasses">
+      <UniqueIdentifier>{dd5074f5-f358-4f09-900c-e6e44239b865}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ClassCollections">
+      <UniqueIdentifier>{08d34c62-4475-48cb-b4a0-66b413328e79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -27,13 +33,7 @@
     <ClCompile Include="Agent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Behaviour.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="Behaviours.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Condition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FiniteStateMachine.cpp">
@@ -43,6 +43,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UtilityAI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Behaviour.h">
+      <Filter>Header Files\VirtualClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Decisions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,20 +65,26 @@
     <ClInclude Include="Agent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Behaviours.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Condition.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FiniteStateMachine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Conditions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UtilityAI.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Decision.h">
+      <Filter>Header Files\VirtualClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Condition.h">
+      <Filter>Header Files\VirtualClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Behaviours.h">
+      <Filter>Header Files\ClassCollections</Filter>
+    </ClInclude>
+    <ClInclude Include="Conditions.h">
+      <Filter>Header Files\ClassCollections</Filter>
+    </ClInclude>
+    <ClInclude Include="Decisions.h">
+      <Filter>Header Files\ClassCollections</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

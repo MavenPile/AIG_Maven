@@ -98,4 +98,8 @@ namespace FSM
 			agent->Reset();
 		}
 	}
+
+	void DecisionBehaviour::Update(Agent* agent, float deltaTime)	{
+		m_decision->MakeDecision(agent, deltaTime);
+	}
 }
