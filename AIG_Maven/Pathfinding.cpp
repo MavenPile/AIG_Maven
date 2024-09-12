@@ -222,9 +222,9 @@ namespace Pathfinding
 
 			//	If we visit the endNode, we can conclude early
 			//	This is a performance optimisation, and can miss more optimal paths
-			if (currentNode == endNode) {
-				break;
-			}
+			//if (currentNode == endNode) {
+			//	break;
+			//}
 
 			//	Remove currentNode from openList
 			openList.erase(openList.begin());
@@ -242,7 +242,7 @@ namespace Pathfinding
 
 				//	Calculate the gScore for the target.
 				float gScore = currentNode->gScore + c.cost;
-				float hScore = AHeuristic(c.target, endNode, 'm');
+				float hScore = AHeuristic(c.target, endNode, 'h');
 				float fScore = gScore + hScore;
 
 				//	If target is not in openList, process target.
