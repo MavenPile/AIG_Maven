@@ -1,5 +1,5 @@
 #pragma once
-#include "Color.hpp"
+//#include "Color.hpp"
 
 namespace FSM
 {
@@ -7,7 +7,7 @@ namespace FSM
 
 	class Behaviour	{
 	private:
-		Color m_colour;
+		//Color m_colour;
 	
 	public:
 		virtual void Update(Agent* agent, float deltaTime) = 0;
@@ -18,7 +18,7 @@ namespace FSM
 		virtual float Evaluate(Agent* agent) { return 0.f; }
 
 		//	Colours
-		virtual Color GetColour() { return m_colour; }
-		virtual void SetColour(Color _colour) { m_colour = _colour; }
+		//virtual Color GetColour() { return m_colour; }
+		//virtual void SetColour(Color _colour) { m_colour = _colour; }
 	};
 }

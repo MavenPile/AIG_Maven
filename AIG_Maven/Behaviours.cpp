@@ -123,7 +123,7 @@ namespace FSM
 		Agent* target = agent->GetStoredTarget();
 		float dist = glm::distance(target->GetPosition(), agent->GetPosition());
 
-		float eval = 1 * agent->GetMap()->GetCellSize() - dist;
+		float eval = 20 * agent->GetMap()->GetCellSize() - dist * 10;
 		if (eval < 0) {
 			eval = 0;
 		}
