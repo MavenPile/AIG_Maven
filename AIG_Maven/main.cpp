@@ -114,7 +114,7 @@ int main()
 	wAgent.SetSpeed(100);
 
 	//Agent fAgent(&map, new SelectorBehaviour(new FollowingBehaviour(),new WanderBehaviour()));
-	//fAgent.SetNode(start);
+	//fAgent.SetNode(map.GetRandomNode());
 	//fAgent.SetStoredTarget(&wAgent);
 
 	//Agent fsmAgent(&map, (Behaviour*)fsm);
@@ -162,9 +162,10 @@ int main()
 		//}
 
 		DrawPath(wAgent.GetBaseAgent()->m_path, { 255,255,255,255 });
+		//DrawPath(fAgent.GetBaseAgent()->m_path, { 255,255,0,255 });
 		//DrawPath(fsmAgent.GetBaseAgent()->m_path, { 255,0,0,255 });
 		//DrawPath(uaiAgent.GetBaseAgent()->m_path, { 0,255,0,255 });
-		DrawPath(dtAgent.GetBaseAgent()->m_path, { 255,0,0,255 });
+		DrawPath(dtAgent.GetBaseAgent()->m_path, { 0,0,255,255 });
 
 		//dAgent.Update(deltaTime);
 		//dAgent.Draw();

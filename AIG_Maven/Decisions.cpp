@@ -12,11 +12,11 @@ namespace Trees
 		if (m_condition->IsTrue(agent)) {
 
 			if (m_lastDecision != m_true) {
-				//if (m_lastDecision) {
-				//	m_lastDecision->Exit(agent);
-				//}
 
-				m_false->Exit(agent);
+				if (m_lastDecision) {
+					m_lastDecision->Exit(agent);
+				}
+
 				m_true->Enter(agent);
 				m_lastDecision = m_true;
 			}
@@ -29,7 +29,7 @@ namespace Trees
 			if (m_lastDecision != m_false) {
 
 				//	Exit the old decision
-				if (m_lastDecision) {
+				if (m_lastDecision != nullptr) {
 					m_lastDecision->Exit(agent);
 				}
 

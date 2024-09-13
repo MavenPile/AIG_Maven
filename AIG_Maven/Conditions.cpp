@@ -5,6 +5,10 @@
 namespace FSM
 {
 	bool DistanceCondition::IsTrue(Agent* agent) {
-		return (glm::distance(agent->GetPosition(), agent->GetStoredTarget()->GetPosition()) < m_distance) == m_lessThan;
+		if (agent->GetStoredTarget()) {
+			return (glm::distance(agent->GetPosition(), agent->GetStoredTarget()->GetPosition()) < m_distance) == m_lessThan;
+		}
+		
+		return false;
 	}
 }
