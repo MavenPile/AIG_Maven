@@ -8,7 +8,7 @@ using namespace Pathfinding;
 
 namespace FSM
 {
-	Agent::Agent(NodeMap* _nodeMap, Behaviour* _behaviour) : m_current(_behaviour), m_nodeMap(_nodeMap), m_colour({ 255,255,0,255 })	{
+	Agent::Agent(NodeMap* _nodeMap, Behaviour* _behaviour) : m_current(_behaviour), m_nodeMap(_nodeMap), m_colour({ 255,255,0,255 }), m_health(100)	{
 		m_current->Enter(this);
 	}
 

@@ -15,9 +15,9 @@ namespace FSM
 	}
 
 	void WanderBehaviour::Enter(Agent* agent) {
-		//	Blue when wandering
-		std::cout << "Entering Wander Behaviour..." << std::endl;
-		agent->SetColour({ 0,0,255,255 });
+		//	Green when wandering
+		std::cout << "Wandering..." << std::endl;
+		agent->SetColour(m_colour);
 		//	We don't want to reset the path when entering a wandering behaviour,
 		//because the agent should still go to where it last tried to pathfind
 		//to. For example, it may have come from a following behaviour, in which
@@ -61,9 +61,9 @@ namespace FSM
 	}
 
 	void FollowingBehaviour::Enter(Agent* agent)	{
-		//	Red when following
-		std::cout << "Entering Follow Behaviour..." << std::endl;
-		agent->SetColour({ 255,0,0,255 });
+		//	Blue when following
+		std::cout << "Following..." << std::endl;
+		agent->SetColour(m_colour);
 		agent->Reset();
 	}
 
@@ -101,5 +101,33 @@ namespace FSM
 
 	void DecisionBehaviour::Update(Agent* agent, float deltaTime)	{
 		m_decision->MakeDecision(agent, deltaTime);
+	}
+
+	void AttackBehaviour::Update(Agent* agent, float deltaTime)	{
+		m_cooldown -= deltaTime;
+
+		if (m_cooldown <= 0)	{
+			agent->TakeDamage(m_dmg);
+			m_cooldown = 5;
+		}
+	}
+
+	void AttackBehaviour::Enter(Agent* agent)	{
+		std::cout << "Attacking..." << std::endl;
+		//	Red when attacking
+		agent->SetColour(m_colour);
+		agent->Reset();
+	}
+
+	float AttackBehaviour::Evaluate(Agent* agent)	{
+		Agent* target = agent->GetStoredTarget();
+		float dist = glm::distance(target->GetPosition(), agent->GetPosition());
+
+		float eval = 1 * agent->GetMap()->GetCellSize() - dist;
+		if (eval < 0) {
+			eval = 0;
+		}
+
+		return eval;
 	}
 }

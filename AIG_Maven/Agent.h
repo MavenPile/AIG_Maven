@@ -17,8 +17,10 @@ namespace FSM
 		Color m_colour;
 		Agent* m_targetAgent = nullptr;
 
+		int m_health;
+
 	public:
-		Agent() : m_current(nullptr), m_nodeMap(nullptr), m_colour({ 255,255,0,255 }) {}
+		Agent() : m_current(nullptr), m_nodeMap(nullptr), m_colour({ 255,255,0,255 }), m_health(100) {}
 		Agent(NodeMap* _nodeMap, Behaviour* _behaviour);
 		~Agent() { delete m_current; }
 
@@ -42,5 +44,7 @@ namespace FSM
 		void SetColour(Color colour) { m_colour = colour; }
 
 		void SetSpeed(float speed) { m_pathAgent.SetSpeed(speed); }
+
+		void TakeDamage(int dmg) { m_health -= dmg; }
 	};
 }

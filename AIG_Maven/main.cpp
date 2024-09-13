@@ -11,10 +11,12 @@
 #include "Conditions.h"
 #include "FiniteStateMachine.h"
 #include "UtilityAI.h"
+#include "Decisions.h"
 
 using namespace Pathfinding;
 using namespace std;
 using namespace FSM;
+using namespace Trees;
 
 int main()
 {
@@ -76,6 +78,29 @@ int main()
 	utilityAI->AddBehaviour(new WanderBehaviour());
 	utilityAI->AddBehaviour(new FollowingBehaviour());
 
+	//---	DECISION TREE
+
+	TrueFalseDecision* within5 = new TrueFalseDecision();
+	within5->AddCondition(new DistanceCondition(5.f * map.GetCellSize(), true));
+
+	TrueFalseDecision* within1 = new TrueFalseDecision();
+	within1->AddCondition(new DistanceCondition(1.f * map.GetCellSize(), true));
+
+	BehaviourDecision* wanderLeaf = new BehaviourDecision();
+	wanderLeaf->AddBehaviour(new WanderBehaviour());
+
+	within5->AddTrue(within1);
+	within5->AddFalse(wanderLeaf);
+
+	BehaviourDecision* followLeaf = new BehaviourDecision();
+	followLeaf->AddBehaviour(new FollowingBehaviour());
+
+	BehaviourDecision* attackLeaf = new BehaviourDecision();
+	attackLeaf->AddBehaviour(new AttackBehaviour(10,5));
+
+	within1->AddTrue(attackLeaf);
+	within1->AddFalse(followLeaf);
+
 	//---	GENERATE AGENT
 
 	//BasePathAgent agent(start, 100);
@@ -101,6 +126,11 @@ int main()
 	//uaiAgent.SetNode(map.GetRandomNode());
 	//uaiAgent.SetStoredTarget(&fsmAgent);
 	//uaiAgent.SetSpeed(30);
+
+	Agent dtAgent(&map, new DecisionBehaviour(within5));
+	dtAgent.SetNode(map.GetRandomNode());
+	dtAgent.SetSpeed(70);
+	dtAgent.SetStoredTarget(&wAgent);
 
 	//---	LOOP
 
@@ -134,6 +164,7 @@ int main()
 		DrawPath(wAgent.GetBaseAgent()->m_path, { 255,255,255,255 });
 		//DrawPath(fsmAgent.GetBaseAgent()->m_path, { 255,0,0,255 });
 		//DrawPath(uaiAgent.GetBaseAgent()->m_path, { 0,255,0,255 });
+		DrawPath(dtAgent.GetBaseAgent()->m_path, { 255,0,0,255 });
 
 		//dAgent.Update(deltaTime);
 		//dAgent.Draw();
@@ -149,6 +180,9 @@ int main()
 
 		//uaiAgent.Update(deltaTime);
 		//uaiAgent.Draw();
+
+		dtAgent.Update(deltaTime);
+		dtAgent.Draw();
 
 		EndDrawing();
 	}
