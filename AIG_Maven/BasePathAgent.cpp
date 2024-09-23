@@ -94,7 +94,7 @@ namespace Pathfinding
 	}
 
 	void BasePathAgent::GoToNode(Node* node) {
-		m_path = AStarSearch(m_currentTargetNode, node);
+		m_path = DijkstrasSearch(m_currentTargetNode, node);
 		m_currentTargetIndex = 0;
 	}
 
