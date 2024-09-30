@@ -122,20 +122,20 @@ int main()
 	//fAgent.SetNode(map.GetRandomNode());
 	//fAgent.SetStoredTarget(&wAgent);
 
-	//Agent fsmAgent(&map, (Behaviour*)fsm);
-	//fsmAgent.SetNode(map.GetRandomNode());
-	//fsmAgent.SetStoredTarget(&dAgent);
-	//fsmAgent.SetSpeed(70);
+	Agent fsmAgent(&map, (Behaviour*)fsm);
+	fsmAgent.SetNode(map.GetRandomNode());
+	fsmAgent.SetStoredTarget(&dAgent);
+	fsmAgent.SetSpeed(70);
 
 	//Agent uaiAgent(&map, utilityAI);
 	//uaiAgent.SetNode(map.GetRandomNode());
 	//uaiAgent.SetStoredTarget(&fsmAgent);
 	//uaiAgent.SetSpeed(120);
 
-	Agent dtAgent(&map, new DecisionBehaviour(within5));
-	dtAgent.SetNode(map.GetRandomNode());
-	dtAgent.SetSpeed(70);
-	dtAgent.SetStoredTarget(&dAgent);
+	//Agent dtAgent(&map, new DecisionBehaviour(within5));
+	//dtAgent.SetNode(map.GetRandomNode());
+	//dtAgent.SetSpeed(70);
+	//dtAgent.SetStoredTarget(&dAgent);
 
 	//---	LOOP
 
@@ -169,9 +169,9 @@ int main()
 		DrawPath(dAgent.GetBaseAgent()->m_path, { 255,255,255,255 });
 		//DrawPath(wAgent.GetBaseAgent()->m_path, { 255,255,255,255 });
 		//DrawPath(fAgent.GetBaseAgent()->m_path, { 255,255,0,255 });
-		//DrawPath(fsmAgent.GetBaseAgent()->m_path, { 255,0,0,255 });
+		DrawPath(fsmAgent.GetBaseAgent()->m_path, { 255,0,0,255 });
 		//DrawPath(uaiAgent.GetBaseAgent()->m_path, { 0,255,0,255 });
-		DrawPath(dtAgent.GetBaseAgent()->m_path, { 0,0,255,255 });
+		//DrawPath(dtAgent.GetBaseAgent()->m_path, { 0,0,255,255 });
 
 		dAgent.Update(deltaTime);
 		dAgent.Draw();
@@ -182,14 +182,14 @@ int main()
 		//fAgent.Update(deltaTime);
 		//fAgent.Draw();
 
-		//fsmAgent.Update(deltaTime);
-		//fsmAgent.Draw();
+		fsmAgent.Update(deltaTime);
+		fsmAgent.Draw();
 
 		//uaiAgent.Update(deltaTime);
 		//uaiAgent.Draw();
 
-		dtAgent.Update(deltaTime);
-		dtAgent.Draw();
+		//dtAgent.Update(deltaTime);
+		//dtAgent.Draw();
 
 		EndDrawing();
 	}
